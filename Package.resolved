@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "w3w-swift-core",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:what3words/w3w-swift-core.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "fe7a660fcde14827ca930787a20e9483b7d2238c"
+      }
+    },
+    {
+      "identity" : "w3w-swift-themes",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:what3words/w3w-swift-themes.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "f3506f0d6fffa30c558f7953a224f87e8cda7dd5"
+      }
+    }
+  ],
+  "version" : 2
+}
