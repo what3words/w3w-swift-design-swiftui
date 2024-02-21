@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import W3WSwiftThemes
+import UIKit
 
 public class W3WActionItemCellViewModel: W3WActionItemCellViewModelProtocol {
-  private(set) var scheme: W3WScheme?
-  private(set) var iconImage: W3WImage?
-  private(set) var uiImage: UIImage?
-  private(set) var title: String
+  private(set) public var scheme: W3WScheme?
+  private(set) public var iconImage: W3WImage?
+  private(set) public var uiImage: UIImage?
+  private(set) public var title: String
   
   init(
     scheme: W3WScheme? = nil,
@@ -19,7 +21,7 @@ public class W3WActionItemCellViewModel: W3WActionItemCellViewModelProtocol {
     title: String
   ) {
     self.scheme = scheme
-    self.icon = icon
+    self.iconImage = iconImage
     self.title = title
   }
   

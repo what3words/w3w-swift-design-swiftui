@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import W3WSwiftThemes
+import UIKit
 
 public protocol W3WActionItemCellViewModelProtocol {
   var scheme: W3WScheme? { get }
-  var icon: W3WImage? { get }
+  var iconImage: W3WImage? { get }
   var uiImage: UIImage? { get }
   var title: String { get }
 }

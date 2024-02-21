@@ -20,7 +20,7 @@ public struct W3WActionItemCell: View {
     self.action = action
   }
   
-  var body: some View {
+  public var body: some View {
     Button(action: action) {
       HStack {
         label
@@ -58,7 +58,7 @@ private extension W3WActionItemCell {
   
   @ViewBuilder
   var iconImage: some View {
-    if let icon = viewModel.icon {
+    if let icon = viewModel.iconImage {
       Image(uiImage: icon.get())
         .resizable()
         .renderingMode(.template)
@@ -81,7 +81,7 @@ private extension W3WActionItemCell {
 #Preview {
   W3WActionItemCell(
     viewModel: W3WActionItemCellViewModel(
-      icon: W3WImage.arrowLeft,
+      iconImage: W3WImage.arrowLeft,
       title: "Testing"),
     action: {
       
