@@ -15,7 +15,7 @@ public class W3WActionItemCellViewModel: W3WActionItemCellViewModelProtocol {
   private(set) public var uiImage: UIImage?
   private(set) public var title: String
   
-  init(
+  public init(
     scheme: W3WScheme? = nil,
     iconImage: W3WImage? = nil,
     title: String

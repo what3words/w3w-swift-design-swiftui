@@ -12,7 +12,7 @@ public struct W3WActionItemCell: View {
   var viewModel: W3WActionItemCellViewModelProtocol
   var action: (() -> Void)
   
-  init(
+  public init(
     viewModel: W3WActionItemCellViewModelProtocol,
     action: @escaping () -> Void
   ) {
