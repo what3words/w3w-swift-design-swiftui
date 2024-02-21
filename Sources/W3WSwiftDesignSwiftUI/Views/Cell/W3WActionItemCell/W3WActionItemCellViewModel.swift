@@ -25,7 +25,7 @@ public class W3WActionItemCellViewModel: W3WActionItemCellViewModelProtocol {
     self.title = title
   }
   
-  init(
+  public init(
     scheme: W3WScheme? = nil,
     uiImage: UIImage? = nil,
     title: String
