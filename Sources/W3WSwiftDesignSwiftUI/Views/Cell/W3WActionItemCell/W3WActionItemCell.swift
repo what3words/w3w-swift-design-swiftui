@@ -8,8 +8,7 @@
 import SwiftUI
 import W3WSwiftThemes
 
-
-struct W3WActionItemCell: View {
+public struct W3WActionItemCell: View {
   var viewModel: W3WActionItemCellViewModelProtocol
   var action: (() -> Void)
   
@@ -61,6 +60,13 @@ private extension W3WActionItemCell {
   var iconImage: some View {
     if let icon = viewModel.icon {
       Image(uiImage: icon.get())
+        .resizable()
+        .renderingMode(.template)
+        .scaledToFit()
+        .squareFrame(24)
+        .foregroundColor(viewModel.scheme?.colors?.secondary?.suColor)
+    } else if let image = viewModel.uiImage {
+      Image(uiImage: image)
         .resizable()
         .renderingMode(.template)
         .scaledToFit()

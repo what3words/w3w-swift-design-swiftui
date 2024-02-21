@@ -7,8 +7,9 @@
 
 import Foundation
 
-protocol W3WActionItemCellViewModelProtocol {
+public protocol W3WActionItemCellViewModelProtocol {
   var scheme: W3WScheme? { get }
   var icon: W3WImage? { get }
+  var uiImage: UIImage? { get }
   var title: String { get }
 }
