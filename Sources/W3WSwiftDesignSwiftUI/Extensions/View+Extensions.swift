@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension View {
+public extension View {
   func squareFrame(_ size: CGFloat) -> some View {
     self.frame(width: size, height: size)
   }

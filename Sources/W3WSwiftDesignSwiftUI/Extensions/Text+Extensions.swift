@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension Text {
+public extension Text {
   func useFont(_ uiFont: UIFont?) -> Text {
     if let uiFont {
       return self.font(Font(uiFont as CTFont))
