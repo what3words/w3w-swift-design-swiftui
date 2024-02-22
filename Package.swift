@@ -4,8 +4,8 @@
 import PackageDescription
 
 let package = Package(
-    name: "W3WSwiftDesignSwiftUI",
-    
+    name: "w3w-swift-design-swiftui",
+    platforms: [.iOS("14.0")],
     products: [.library(name: "W3WSwiftDesignSwiftUI", targets: ["W3WSwiftDesignSwiftUI"])],
 
     dependencies: [.package(url: "git@github.com:what3words/w3w-swift-themes.git", branch: "main")],
