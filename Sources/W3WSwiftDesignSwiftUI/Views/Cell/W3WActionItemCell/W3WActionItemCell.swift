@@ -27,7 +27,10 @@ public struct W3WActionItemCell: View {
         Spacer()
         arrowImage
       }
+      .contentShape(Rectangle())
     }
+    .buttonStyle(.plain)
+    .frame(minHeight: 36)
   }
 }
 
@@ -46,14 +49,14 @@ private extension W3WActionItemCell {
       .resizable()
       .renderingMode(.template)
       .scaledToFit()
-      .squareFrame(24)
-      .foregroundColor(viewModel.scheme?.colors?.secondary?.suColor)
+      .squareFrame(18)
+      .foregroundColor(iconColor)
   }
   
   var titleLabel: some View {
     Text(viewModel.title)
-      .useFont(viewModel.scheme?.styles?.fonts?.body.withSize(17))
-      .foregroundColor(viewModel.scheme?.colors?.secondary?.suColor)
+      .useFont(labelFont)
+      .foregroundColor(labelColor)
   }
   
   @ViewBuilder
@@ -63,18 +66,34 @@ private extension W3WActionItemCell {
         .resizable()
         .renderingMode(.template)
         .scaledToFit()
-        .squareFrame(24)
-        .foregroundColor(viewModel.scheme?.colors?.secondary?.suColor)
+        .squareFrame(18)
+        .foregroundColor(iconColor)
     } else if let image = viewModel.uiImage {
       Image(uiImage: image)
         .resizable()
         .renderingMode(.template)
         .scaledToFit()
         .squareFrame(24)
-        .foregroundColor(viewModel.scheme?.colors?.secondary?.suColor)
+        .foregroundColor(iconColor)
     } else {
       EmptyView()
     }
+  }
+}
+
+// MARK: - Getters
+
+private extension W3WActionItemCell {
+  private var iconColor: Color? {
+    return viewModel.scheme?.colors?.secondary?.suColor
+  }
+  
+  private var labelColor: Color? {
+    return viewModel.scheme?.colors?.foreground?.suColor
+  }
+  
+  private var labelFont: UIFont? {
+    return viewModel.scheme?.styles?.fonts?.body
   }
 }
 
