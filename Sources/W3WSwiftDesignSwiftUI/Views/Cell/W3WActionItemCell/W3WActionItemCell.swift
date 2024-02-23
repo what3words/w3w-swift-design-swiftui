@@ -48,7 +48,7 @@ private extension W3WActionItemCell {
   @ViewBuilder
   var arrowImage: some View {
     W3WNavigationImage()
-      .squareFrame(18)
+      .squareFrame(14)
       .foregroundColor(iconColor)
   }
   
