@@ -9,6 +9,7 @@ import SwiftUI
 import W3WSwiftThemes
 
 public struct W3WActionItemCell: View {
+
   var viewModel: W3WActionItemCellViewModelProtocol
   var action: (() -> Void)
   
@@ -44,11 +45,9 @@ private extension W3WActionItemCell {
     )
   }
   
+  @ViewBuilder
   var arrowImage: some View {
-    Image(uiImage: W3WImage.chevronRight.get())
-      .resizable()
-      .renderingMode(.template)
-      .scaledToFit()
+    W3WNavigationImage()
       .squareFrame(18)
       .foregroundColor(iconColor)
   }
