@@ -43,6 +43,7 @@ private extension W3WActionItemCell {
       title: { titleLabel },
       icon: { iconImage }
     )
+    .blur(radius: 2)
   }
   
   @ViewBuilder
@@ -84,7 +85,7 @@ private extension W3WActionItemCell {
 
 private extension W3WActionItemCell {
   private var iconColor: Color? {
-    return viewModel.scheme?.colors?.secondary?.suColor
+    return viewModel.scheme?.colors?.tint?.suColor
   }
   
   private var labelColor: Color? {
