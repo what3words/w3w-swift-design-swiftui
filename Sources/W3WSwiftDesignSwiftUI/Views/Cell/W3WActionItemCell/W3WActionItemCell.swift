@@ -43,7 +43,6 @@ private extension W3WActionItemCell {
       title: { titleLabel },
       icon: { iconImage }
     )
-    .blur(radius: 2)
   }
   
   @ViewBuilder
