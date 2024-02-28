@@ -84,25 +84,40 @@ private extension W3WActionItemCell {
 
 private extension W3WActionItemCell {
   private var iconColor: Color? {
-    return viewModel.scheme?.colors?.tint?.suColor
+    let color = W3WColor(
+      light: W3WCoreColor.blue50,
+      dark: W3WCoreColor.blue72
+    )
+
+    return color.suColor
   }
   
   private var labelColor: Color? {
-    return viewModel.scheme?.colors?.foreground?.suColor
+    let color = W3WColor(
+      light: W3WCoreColor.blue20,
+      dark: W3WCoreColor.grey95
+    )
+    
+    return color.suColor
   }
   
   private var labelFont: UIFont? {
-    return viewModel.scheme?.styles?.fonts?.body
+    return W3WFonts().body.withSize(17)
   }
 }
 
 #Preview {
-  W3WActionItemCell(
-    viewModel: W3WActionItemCellViewModel(
-      iconImage: W3WImage.arrowLeft,
-      title: "Testing"),
-    action: {
-      
+  List {
+    Section {
+      W3WActionItemCell(
+        viewModel: W3WActionItemCellViewModel(
+          scheme: W3WTheme(theme: .what3words).schemes[.cells],
+          iconImage: W3WImage.arrowLeft,
+          title: "Testing"),
+        action: {
+          
+        }
+      )
     }
-  )
+  }
 }
