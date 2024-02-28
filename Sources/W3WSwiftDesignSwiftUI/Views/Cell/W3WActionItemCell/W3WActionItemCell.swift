@@ -12,13 +12,16 @@ public struct W3WActionItemCell: View {
 
   var viewModel: W3WActionItemCellViewModelProtocol
   var action: (() -> Void)
+  var colorScheme: ColorScheme?
   
   public init(
     viewModel: W3WActionItemCellViewModelProtocol,
+    colorScheme: ColorScheme? = nil,
     action: @escaping () -> Void
   ) {
     self.viewModel = viewModel
     self.action = action
+    self.colorScheme = colorScheme
   }
   
   public var body: some View {
@@ -84,25 +87,46 @@ private extension W3WActionItemCell {
 
 private extension W3WActionItemCell {
   private var iconColor: Color? {
-    return viewModel.scheme?.colors?.tint?.suColor
+    if let colorScheme {
+      if colorScheme == .dark {
+        return W3WCoreColor.blue72.suColor
+      }
+      
+      if colorScheme == .light {
+        return W3WCoreColor.blue50.suColor
+      }
+    }
+    return W3WColor.w3wLabelsSecondary.suColor
   }
   
   private var labelColor: Color? {
-    return viewModel.scheme?.colors?.foreground?.suColor
+    if colorScheme == .dark {
+      return W3WCoreColor.grey95.suColor
+    }
+    
+    if colorScheme == .light {
+      return W3WCoreColor.blue20.suColor
+    }
+    return W3WColor.w3wLabelsSecondary.suColor
   }
   
   private var labelFont: UIFont? {
-    return viewModel.scheme?.styles?.fonts?.body
+    return W3WFonts().body.withSize(17)
   }
 }
 
 #Preview {
-  W3WActionItemCell(
-    viewModel: W3WActionItemCellViewModel(
-      iconImage: W3WImage.arrowLeft,
-      title: "Testing"),
-    action: {
-      
+  List {
+    Section {
+      W3WActionItemCell(
+        viewModel: W3WActionItemCellViewModel(
+          scheme: W3WTheme(theme: .what3words).schemes[.cells],
+          iconImage: W3WImage.arrowLeft,
+          title: "Testing"),
+        action: {
+          
+        }
+      )
     }
-  )
+  }
 }
