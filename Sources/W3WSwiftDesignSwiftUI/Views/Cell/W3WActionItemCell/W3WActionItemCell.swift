@@ -39,10 +39,10 @@ public struct W3WActionItemCell: View {
 
 private extension W3WActionItemCell {
   var label: some View {
-    Label(
-      title: { titleLabel },
-      icon: { iconImage }
-    )
+    HStack(spacing: 16) {
+      iconImage
+      titleLabel
+    }
   }
   
   @ViewBuilder
@@ -65,7 +65,7 @@ private extension W3WActionItemCell {
         .resizable()
         .renderingMode(.template)
         .scaledToFit()
-        .squareFrame(18)
+        .squareFrame(24)
         .foregroundColor(iconColor)
     } else if let image = viewModel.uiImage {
       Image(uiImage: image)
