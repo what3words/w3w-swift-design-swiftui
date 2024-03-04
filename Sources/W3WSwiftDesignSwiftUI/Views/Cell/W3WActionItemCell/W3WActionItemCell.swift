@@ -39,10 +39,10 @@ public struct W3WActionItemCell: View {
 
 private extension W3WActionItemCell {
   var label: some View {
-    Label(
-      title: { titleLabel },
-      icon: { iconImage }
-    )
+    HStack(spacing: 16) {
+      iconImage
+      titleLabel
+    }
   }
   
   @ViewBuilder
