@@ -65,7 +65,7 @@ private extension W3WActionItemCell {
         .resizable()
         .renderingMode(.template)
         .scaledToFit()
-        .squareFrame(24)
+        .squareFrame(20)
         .foregroundColor(iconColor)
     } else if let image = viewModel.uiImage {
       Image(uiImage: image)
