@@ -1,27 +1,34 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Khải Toàn Năng on 26/6/24.
 //
 
 import SwiftUI
 
-struct W3WAlertContentView: View {
+struct W3WAlertContentView<ButtonView: View>: View {
   var title: String = ""
   var message: String = ""
-
-  var primaryButtonTitle: String = ""
-  var secondaryButtonTittle: String = ""
-  var primaryAction: (() -> Void) = {}
-  var secondaryAction: (() -> Void) = {}
   
-    var body: some View {
-      VStack {
-        titleText
-        messageText
-      }
+  let buttonView: ButtonView
+  
+  init(
+    title: String = "",
+    message: String = "",
+    @ViewBuilder buttonView: () -> ButtonView
+  ) {
+    self.title = title
+    self.message = message
+    self.buttonView = buttonView()
+  }
+  var body: some View {
+    VStack {
+      titleText
+      messageText
+      buttonView
     }
+  }
 }
 
 private extension W3WAlertContentView {
@@ -32,12 +39,22 @@ private extension W3WAlertContentView {
   var messageText: some View {
     Text(message)
   }
-  
-  var primaryButton: some View {
-    W3WPrimaryButton(scheme: nil, title: primaryButtonTitle)
-  }
 }
 
 #Preview {
-  W3WAlertContentView()
+  VStack {
+    W3WAlertContentView(
+      title: "This is title",
+      message: "This is Message"
+    ) {
+      HStack {
+        Button(action: {}, label: {
+          Text("Delete")
+        })
+        Button(action: {}, label: {
+          Text("Delete")
+        })
+      }
+    }
+  }
 }
