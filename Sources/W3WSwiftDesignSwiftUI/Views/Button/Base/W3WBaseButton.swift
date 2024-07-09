@@ -10,21 +10,71 @@ import W3WSwiftThemes
 
 struct W3WBaseButton: View {
   var title: String = ""
-  var font: Font = .body
-  
+  var font: UIFont = .systemFont(ofSize: 16)
   var iconImage: W3WImage?
   var uiImage: UIImage?
-
   var iconSize: CGFloat = 24
   var horizontalPadding: CGFloat = 16
   var verticalPadding: CGFloat = 12
   var cornerRadius: CGFloat = 8
   var isCapsuleBackground: Bool = false
-  
+  var isExpandable: Bool = false
   var backgroundColor: Color = .blue
   var forgroundColor: Color = .white
   
   var action: (() -> Void) = {}
+  
+  init(
+    title: String = "",
+    font: UIFont? = .systemFont(ofSize: 16),
+    iconImage: W3WImage? = nil,
+    uiImage: UIImage? = nil,
+    iconSize: CGFloat? = 24,
+    horizontalPadding: CGFloat? = 16,
+    verticalPadding: CGFloat? = 12,
+    cornerRadius: CGFloat? = 8,
+    isCapsuleBackground: Bool = false,
+    isExpandable: Bool = false,
+    backgroundColor: Color? = .blue,
+    forgroundColor: Color? = .white,
+    action: (@escaping () -> Void) = {}
+  ) {
+    self.title = title
+    if let font {
+      self.font = font
+    }
+
+    self.iconImage = iconImage
+    self.uiImage = uiImage
+    self.isCapsuleBackground = isCapsuleBackground
+    self.isExpandable = isExpandable
+    
+    if let iconSize {
+      self.iconSize = iconSize
+    }
+
+    if let horizontalPadding {
+      self.horizontalPadding = horizontalPadding
+    }
+    
+    if let verticalPadding {
+      self.verticalPadding = verticalPadding
+    }
+
+    if let cornerRadius {
+      self.cornerRadius = cornerRadius
+    }
+
+    if let backgroundColor {
+      self.backgroundColor = backgroundColor
+    }
+
+    if let forgroundColor {
+      self.forgroundColor = forgroundColor
+    }
+
+    self.action = action
+  }
   
   var body: some View {
     Button(
@@ -42,9 +92,9 @@ private extension W3WBaseButton {
   @ViewBuilder
   var buttonLabel: some View {
     if isCapsuleBackground {
-      titleLabel.clipShape(Capsule())
+      titleView.clipShape(Capsule())
     } else {
-      titleLabel.clipShape(
+      titleView.clipShape(
         RoundedRectangle(
           cornerRadius: cornerRadius
         )
@@ -52,17 +102,29 @@ private extension W3WBaseButton {
     }
   }
   
-  @ViewBuilder
+  var titleView: some View {
+    HStack {
+      if isExpandable {
+        Spacer(minLength: horizontalPadding)
+        titleLabel
+        Spacer(minLength: horizontalPadding)
+      } else {
+        titleLabel
+          .padding(.horizontal, horizontalPadding)
+      }
+    }
+    .background(backgroundColor)
+  }
+  
   var titleLabel: some View {
     HStack {
       icon
       Text(title)
-        .font(font)
+        .useFont(font)
     }
     .foregroundColor(forgroundColor)
     .padding(.vertical, verticalPadding)
-    .padding(.horizontal, horizontalPadding)
-    .background(backgroundColor)
+
   }
   
   var icon: some View {

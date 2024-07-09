@@ -39,23 +39,23 @@ public struct SizeReactiveWrapperView<Content: View>: DynamicSizeViewProtocol {
   }
 }
 
-#Preview {
-  SizeReactiveWrapperView {
-    W3WActionPanel(
-      shouldShowNavBar: true,
-      navBarTitle: "Testing",
-      cornerRadius: 8
-    ) {
-      VStack {
-        Text("Testing")
-        Text("Testing")
-        Text("Testing")
-        Text("Testing")
-        Text("Testing")
-        Text("Testing")
-      }
-      .frame(maxWidth: .infinity)
-      .background(Color.green)
-    }
-  }
-}
+//#Preview {
+//  SizeReactiveWrapperView {
+//    W3WActionPanel(
+//      shouldShowNavBar: true,
+//      navBarTitle: "Testing",
+//      cornerRadius: 8
+//    ) {
+//      VStack {
+//        Text("Testing")
+//        Text("Testing")
+//        Text("Testing")
+//        Text("Testing")
+//        Text("Testing")
+//        Text("Testing")
+//      }
+//      .frame(maxWidth: .infinity)
+//      .background(Color.green)
+//    }
+//  }
+//}

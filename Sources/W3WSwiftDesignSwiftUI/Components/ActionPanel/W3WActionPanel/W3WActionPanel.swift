@@ -8,29 +8,27 @@
 import SwiftUI
 import W3WSwiftThemes
 
-struct W3WActionPanel<Content: View>: View {
+struct W3WActionPanel<NavBarContent: View, Content: View>: View {
   var shouldShowNavBar: Bool = false
   var navBarTitle: String = ""
   var navBarBackgroundColor: Color = .blue
   var navBarForgroundColor: Color = .black
   var navBarFont: UIFont? = nil
   var cornerRadius: CGFloat = 8
+  let navBar: NavBarContent
   let content: Content
 
   init(
     shouldShowNavBar: Bool = false,
-    navBarTitle: String = "",
-    navBarBackgroundColor: Color = .blue,
-    navBarForgroundColor: Color = .black,
     font: UIFont? = nil,
     cornerRadius: CGFloat = 8,
+    @ViewBuilder navigationBar: () -> NavBarContent,
     @ViewBuilder content: () -> Content
   ) {
     self.shouldShowNavBar = shouldShowNavBar
-    self.navBarTitle = navBarTitle
-    self.navBarBackgroundColor = navBarBackgroundColor
     self.cornerRadius = cornerRadius
     self.content = content()
+    self.navBar = navigationBar()
   }
   
   var body: some View {
@@ -44,68 +42,68 @@ private extension W3WActionPanel {
   var contentView: some View {
     VStack(spacing: 0) {
       if shouldShowNavBar {
-        navBarView
+        navBar
       }
       content
     }
     .cornerRadius(cornerRadius, corners: [.topLeft, .topRight])
-  }
-  
-  var navBarView: some View {
-    HStack {
-      W3WIconImage(
-        iconImage: .chevronLeft,
-        color: navBarForgroundColor
-      )
-      Text(navBarTitle)
-        .useFont(navBarFont)
-        .foregroundColor(navBarForgroundColor)
-      Spacer()
-      W3WIconImage(
-        iconImage: .xmark,
-        iconSize: 16,
-        color: navBarForgroundColor
-      )
-    }
-    .padding(8)
-    .background(navBarBackgroundColor)
   }
 }
 
 #Preview("Action Panel with NavBar") {
   W3WActionPanel(
     shouldShowNavBar: true,
-    navBarTitle: "Testing",
-    cornerRadius: 8
-  ) {
-    VStack {
-      Text("Testing")
-      Text("Testing")
-      Text("Testing")
-      Text("Testing")
-      Text("Testing")
-      Text("Testing")
+    cornerRadius: 8,
+    navigationBar: {
+      EmptyView()
+    },
+    content: {
+      VStack {
+        Text("Testing")
+        Text("Testing")
+        Text("Testing")
+        Text("Testing")
+        Text("Testing")
+        Text("Testing")
+      }
+      .frame(maxWidth: .infinity)
+      .background(Color.green)
     }
-    .frame(maxWidth: .infinity)
-    .background(Color.green)
-  }
+  )
 }
 
 #Preview("Action Panel with NavBar") {
   W3WActionPanel(
     shouldShowNavBar: false,
-    navBarTitle: "Testing",
-    cornerRadius: 8
-  ) {
-    VStack {
-      Text("Testing")
-      Text("Testing")
-      Text("Testing")
-      Text("Testing")
-      Text("Testing")
-      Text("Testing")
+    cornerRadius: 8,
+    navigationBar: {
+      HStack {
+        W3WIconImage(
+          iconImage: .chevronLeft,
+          color: .red
+        )
+        Text("Back")
+          .foregroundColor(.green)
+        Spacer()
+        W3WIconImage(
+          iconImage: .xmark,
+          iconSize: 16,
+          color: .blue
+        )
+      }
+      .padding(8)
+      .background(Color.yellow)
+    }, content:  {
+      VStack {
+        Text("Testing")
+        Text("Testing")
+        Text("Testing")
+        Text("Testing")
+        Text("Testing")
+        Text("Testing")
+      }
+      .frame(maxWidth: .infinity)
+      .background(Color.green)
     }
-    .frame(maxWidth: .infinity)
-    .background(Color.green)
-  }
+  )
 }
