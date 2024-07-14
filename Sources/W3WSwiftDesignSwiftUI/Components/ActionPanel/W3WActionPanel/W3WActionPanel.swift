@@ -8,19 +8,14 @@
 import SwiftUI
 import W3WSwiftThemes
 
-struct W3WActionPanel<NavBarContent: View, Content: View>: View {
+public struct W3WActionPanel<NavBarContent: View, Content: View>: View {
   var shouldShowNavBar: Bool = false
-  var navBarTitle: String = ""
-  var navBarBackgroundColor: Color = .blue
-  var navBarForgroundColor: Color = .black
-  var navBarFont: UIFont? = nil
   var cornerRadius: CGFloat = 8
   let navBar: NavBarContent
   let content: Content
 
-  init(
+  public init(
     shouldShowNavBar: Bool = false,
-    font: UIFont? = nil,
     cornerRadius: CGFloat = 8,
     @ViewBuilder navigationBar: () -> NavBarContent,
     @ViewBuilder content: () -> Content
@@ -31,7 +26,7 @@ struct W3WActionPanel<NavBarContent: View, Content: View>: View {
     self.navBar = navigationBar()
   }
   
-  var body: some View {
+  public var body: some View {
     contentView
   }
 }
@@ -52,7 +47,7 @@ private extension W3WActionPanel {
 
 #Preview("Action Panel with NavBar") {
   W3WActionPanel(
-    shouldShowNavBar: true,
+    shouldShowNavBar: false,
     cornerRadius: 8,
     navigationBar: {
       EmptyView()
@@ -72,9 +67,9 @@ private extension W3WActionPanel {
   )
 }
 
-#Preview("Action Panel with NavBar") {
+#Preview("Action Panel without NavBar") {
   W3WActionPanel(
-    shouldShowNavBar: false,
+    shouldShowNavBar: true,
     cornerRadius: 8,
     navigationBar: {
       HStack {

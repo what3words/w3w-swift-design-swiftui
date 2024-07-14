@@ -8,7 +8,7 @@ let package = Package(
     platforms: [.iOS("13.0")],
     products: [.library(name: "W3WSwiftDesignSwiftUI", targets: ["W3WSwiftDesignSwiftUI"])],
 
-    dependencies: [.package(url: "git@github.com:what3words/w3w-swift-themes.git", branch: "spike/theme-refactor")],
+    dependencies: [.package(path: "/Users/khaitoannang/Work/what3words/repo/w3w-swift-themes")],
 
     targets: [
       .target(name: "W3WSwiftDesignSwiftUI", dependencies: [.product(name: "W3WSwiftThemes", package: "w3w-swift-themes")]),

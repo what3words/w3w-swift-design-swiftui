@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct W3WSUButton: View {
+public struct W3WSUButton: View {
   var title: String = ""
   var iconImage: W3WImage?
   var uiImage: UIImage?
@@ -15,7 +15,22 @@ struct W3WSUButton: View {
   var isExpandable: Bool = false
   var action: (() -> Void) = {}
   
-  var body: some View {
+  public init(
+    title: String = "",
+    iconImage: W3WImage? = nil,
+    uiImage: UIImage? = nil,
+    scheme: W3WScheme? = nil,
+    isExpandable: Bool = false,
+    action: @escaping () -> Void = {}
+  ) {
+    self.title = title
+    self.iconImage = iconImage
+    self.uiImage = uiImage
+    self.scheme = scheme
+    self.isExpandable = isExpandable
+    self.action = action
+  }
+  public var body: some View {
     W3WBaseButton(
       title: title,
       font: nil,

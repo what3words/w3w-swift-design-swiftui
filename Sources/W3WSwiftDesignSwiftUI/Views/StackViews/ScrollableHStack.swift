@@ -7,18 +7,29 @@
 
 import SwiftUI
 
-struct ScrollableHStack<Content: View>: View {
+public struct ScrollableHStack<Content: View>: View {
   var spacing: CGFloat? = nil
   var horizontalPadding: CGFloat = 0
   var verticalPadding: CGFloat = 0
+  let content: Content
   
-  @ViewBuilder let content: () -> Content
+  public init(
+    spacing: CGFloat? = 8,
+    horizontalPadding: CGFloat = 0,
+    verticalPadding: CGFloat = 0,
+    @ViewBuilder content: () -> Content
+  ) {
+    self.spacing = spacing
+    self.horizontalPadding = horizontalPadding
+    self.verticalPadding = verticalPadding
+    self.content = content()
+  }
   
-  var body: some View {
+  public var body: some View {
     GeometryReader { proxy in
       ScrollView(.horizontal, showsIndicators: false) {
         HStack(spacing: spacing) {
-          content()
+          content
         }
         .padding(.vertical, verticalPadding)
         .padding(.horizontal, horizontalPadding)

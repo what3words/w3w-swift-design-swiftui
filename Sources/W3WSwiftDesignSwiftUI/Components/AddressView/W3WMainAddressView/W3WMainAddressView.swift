@@ -6,21 +6,25 @@
 //
 
 import SwiftUI
+import W3WSwiftThemes
 
-struct W3WMainAddressView: View {
+public struct W3WMainAddressView: View {
+  var theme: W3WTheme?
   var title: String = ""
   var subtitle: String = ""
   var action: (() -> Void) = {}
   
-  init(
+  public init(
+    theme: W3WTheme? = nil,
     title: String = "",
     subtitle: String = ""
   ) {
+    self.theme = theme
     self.title = title
     self.subtitle = subtitle
   }
   
-  var body: some View {
+  public var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       HStack {
         titleText
@@ -29,9 +33,11 @@ struct W3WMainAddressView: View {
         Spacer()
         copyButton
       }
-      subTitleText
-        .lineLimit(1)
-        .minimumScaleFactor(0.5)
+      if !subtitle.isEmpty {
+        subTitleText
+          .lineLimit(1)
+          .minimumScaleFactor(0.5)
+      }
     }
   }
 }
@@ -41,9 +47,12 @@ struct W3WMainAddressView: View {
 private extension W3WMainAddressView {
   var titleText: some View {
     Text("///")
-      .foregroundColor(Color.red)
+      .foregroundColor(theme?.brandBase?.suColor)
+      .font(titleScheme?.styles?.font?.suFont)
     + Text(title)
-      .foregroundColor(Color.black)
+      .foregroundColor(titleScheme?.colors?.foreground?.suColor)
+      .font(titleScheme?.styles?.font?.suFont)
+
   }
   
   var subTitleText: some View {
@@ -59,6 +68,12 @@ private extension W3WMainAddressView {
     } label: {
       W3WIconImage(iconImage: .docOnDoc)
     }
+  }
+}
+
+private extension W3WMainAddressView {
+  var titleScheme: W3WScheme? {
+    theme?.labelScheme(grade: .tertiary, fontStyle: .largeTitle, weight: .black)
   }
 }
 
