@@ -58,8 +58,10 @@ private extension W3WMainAddressView {
   var subTitleText: some View {
     Text("///")
       .foregroundColor(Color.clear)
+      .font(subtitleScheme?.styles?.font?.suFont)
     + Text(subtitle)
       .foregroundColor(Color.black)
+      .font(subtitleScheme?.styles?.font?.suFont)
   }
   
   var copyButton: some View {
@@ -74,6 +76,10 @@ private extension W3WMainAddressView {
 private extension W3WMainAddressView {
   var titleScheme: W3WScheme? {
     theme?.labelScheme(grade: .tertiary, fontStyle: .largeTitle, weight: .black)
+  }
+  
+  var subtitleScheme: W3WScheme? {
+    theme?.labelScheme(grade: .tertiary, fontStyle: .body, weight: .black)
   }
 }
 

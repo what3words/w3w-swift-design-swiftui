@@ -89,9 +89,7 @@ private extension W3WActionPanel {
       .padding(8)
       .background(Color.yellow)
     }, content:  {
-      VStack {
-        Text("Testing")
-        Text("Testing")
+      ScrollableHStack {
         Text("Testing")
         Text("Testing")
         Text("Testing")
