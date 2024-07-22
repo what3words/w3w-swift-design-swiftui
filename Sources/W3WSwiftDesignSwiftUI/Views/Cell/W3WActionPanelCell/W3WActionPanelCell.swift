@@ -147,11 +147,6 @@ private extension W3WActionPanelCell {
       title: "With",
       underlineText: "underline and Left Item"
     ) {
-      W3WTextButton(
-        title: "Share",
-        forgroundColor: .blue,
-        font: .boldSystemFont(ofSize: 16)
-      )
     }
   }
 }
