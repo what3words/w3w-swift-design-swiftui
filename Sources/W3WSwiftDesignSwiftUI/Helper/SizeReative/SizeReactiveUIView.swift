@@ -35,10 +35,20 @@ public class SizeReactiveUIView<Content: View>: UIView {
     let reactiveView = SizeReactiveWrapperView {
       rootView
     }
-    let hostingController = UIHostingController(rootView: reactiveView)
     
+    let hostingController = UIHostingController(rootView: reactiveView)
     addSubview(hostingController.view)
+    
     hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+    hostingController.view.isOpaque = false
+    hostingController.view.backgroundColor = UIColor.clear
+    
+    if #available(iOS 16.4, *) {
+      hostingController.safeAreaRegions = SafeAreaRegions()
+    } else {
+      hostingController.disableSafeArea()
+    }
+    
     NSLayoutConstraint.activate([
       hostingController.view.topAnchor.constraint(equalTo: self.topAnchor),
       hostingController.view.bottomAnchor.constraint(equalTo: self.bottomAnchor),
@@ -73,6 +83,31 @@ public class SizeReactiveUIView<Content: View>: UIView {
       widthConstraint.constant = width
     } else {
       self.widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+  }
+}
+
+extension UIHostingController {
+  func disableSafeArea() {
+    guard let viewClass = object_getClass(view) else { return }
+    
+    let viewSubclassName = String(cString: class_getName(viewClass)).appending("_IgnoreSafeArea")
+    if let viewSubclass = NSClassFromString(viewSubclassName) {
+      object_setClass(view, viewSubclass)
+    }
+    else {
+      guard let viewClassNameUtf8 = (viewSubclassName as NSString).utf8String else { return }
+      guard let viewSubclass = objc_allocateClassPair(viewClass, viewClassNameUtf8, 0) else { return }
+      
+      if let method = class_getInstanceMethod(UIView.self, #selector(getter: UIView.safeAreaInsets)) {
+        let safeAreaInsets: @convention(block) (AnyObject) -> UIEdgeInsets = { _ in
+          return .zero
+        }
+        class_addMethod(viewSubclass, #selector(getter: UIView.safeAreaInsets), imp_implementationWithBlock(safeAreaInsets), method_getTypeEncoding(method))
+      }
+      
+      objc_registerClassPair(viewSubclass)
+      object_setClass(view, viewSubclass)
     }
   }
 }

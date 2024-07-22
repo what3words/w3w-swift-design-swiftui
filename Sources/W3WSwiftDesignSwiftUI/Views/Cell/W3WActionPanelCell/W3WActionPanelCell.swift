@@ -7,43 +7,40 @@
 
 import SwiftUI
 
-struct W3WActionPanelCell<Content: View>: View {
+public struct W3WActionPanelCell<Content: View>: View {
+  var theme: W3WTheme?
   var iconImage: W3WImage?
   var uiImage: UIImage?
   var iconSize: CGFloat = 24
   var iconColor: Color?
   var title: String = ""
-  var font: UIFont? = nil
-  var forgroundColor: Color = .black
   var underlineText: String = ""
   var underlineAction: (() -> Void)?
   let rightItem: Content
   
-  init(
+  public init(
+    theme: W3WTheme?,
     iconImage: W3WImage? = nil,
     uiImage: UIImage? = nil,
     iconSize: CGFloat = 24,
     iconColor: Color? = nil,
     title: String = "",
-    font: UIFont? = nil,
-    forgroundColor: Color = .black,
     underlineText: String = "",
     underlineAction: (() -> Void)? = nil,
     @ViewBuilder rightItem: () -> Content
   ) {
+    self.theme = theme
     self.iconImage = iconImage
     self.uiImage = uiImage
     self.iconSize = iconSize
     self.iconColor = iconColor
     self.title = title
-    self.font = font
-    self.forgroundColor = forgroundColor
     self.underlineText = underlineText
     self.underlineAction = underlineAction
     self.rightItem = rightItem()
   }
 
-  var body: some View {
+  public var body: some View {
     contentView
   }
 }
@@ -61,46 +58,75 @@ extension W3WActionPanelCell {
   
   var leftItemView: some View {
     HStack(spacing: 4) {
-      icon
-      titleText
-      underline
+      iconView
+      titleView
+      underlineView
     }
   }
   
-  var titleText: some View {
+  var titleView: some View {
     Text(title)
-      .useFont(font)
-      .foregroundColor(forgroundColor)
+      .font(labelScheme?.styles?.font?.suFont)
+      .foregroundColor(labelScheme?.colors?.foreground?.suColor)
   }
   
-  var underline: some View {
+  var underlineView: some View {
     Text(underlineText)
-      .useFont(font)
+      .font(labelScheme?.styles?.font?.suFont)
       .underline()
-      .foregroundColor(forgroundColor)
+      .foregroundColor(labelScheme?.colors?.foreground?.suColor)
       .onTapGesture {
         underlineAction?()
       }
   }
   
-  var icon: some View {
-    W3WIconImage(
-      iconImage: iconImage,
-      uiImage: uiImage,
-      iconSize: iconSize,
-      color: iconColor ?? forgroundColor
-    )
+  var iconView: some View {
+    VStack {
+      if iconImage != nil || uiImage != nil {
+        W3WIconImage(
+          iconImage: iconImage,
+          uiImage: uiImage,
+          iconSize: iconSize,
+          color: iconColor ?? defaultImageColor
+        )
+      } else {
+        W3WIconImage(
+          iconImage: .listBullet,
+          uiImage: nil,
+          iconSize: iconSize,
+          color: defaultImageColor
+        )
+      }
+    }
+  }
+}
+
+private extension W3WActionPanelCell {
+  private var labelScheme: W3WScheme? {
+    theme?.labelScheme(grade: .tertiary, fontStyle: .callout, weight: .regular)
+  }
+  
+  private var actionLabelScheme: W3WScheme? {
+    theme?.labelScheme(grade: .tertiary, fontStyle: .callout, weight: .regular)
+  }
+  
+  private var defaultImageColor: Color? {
+    theme?.labelsSecondary?.suColor
   }
 }
 
 #Preview {
   VStack {
     W3WActionPanelCell(
+      theme: .what3words,
       iconImage: .accessibilityFill,
+      iconColor: .red,
       title: "Without underline"
     ) {
     }
+    
     W3WActionPanelCell(
+      theme: .what3words,
       iconImage: .accessibilityFill,
       title: "With",
       underlineText: "underline"
@@ -108,6 +134,14 @@ extension W3WActionPanelCell {
     }
     
     W3WActionPanelCell(
+      theme: .what3words,
+      title: "Without Image",
+      underlineText: "underline"
+    ) {
+    }
+    
+    W3WActionPanelCell(
+      theme: .what3words,
       iconImage: .arrowRight,
       iconColor: .blue,
       title: "With",

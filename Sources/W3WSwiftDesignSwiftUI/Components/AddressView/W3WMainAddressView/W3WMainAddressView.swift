@@ -52,7 +52,6 @@ private extension W3WMainAddressView {
     + Text(title)
       .foregroundColor(titleScheme?.colors?.foreground?.suColor)
       .font(titleScheme?.styles?.font?.suFont)
-
   }
   
   var subTitleText: some View {
@@ -75,7 +74,8 @@ private extension W3WMainAddressView {
 
 private extension W3WMainAddressView {
   var titleScheme: W3WScheme? {
-    theme?.labelScheme(grade: .tertiary, fontStyle: .largeTitle, weight: .black)
+    let scheme = W3WTheme.what3words.labelScheme(grade: .tertiary, fontStyle: .largeTitle, weight: .black)
+    return scheme
   }
   
   var subtitleScheme: W3WScheme? {
