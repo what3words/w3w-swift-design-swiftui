@@ -28,15 +28,19 @@ public struct W3WMainAddressView: View {
     VStack(alignment: .leading, spacing: 4) {
       HStack {
         titleText
-          .lineLimit(1)
           .minimumScaleFactor(0.5)
+          .lineLimit(1)
+          .layoutPriority(1)
+          .frame(minHeight: 40)
         Spacer()
         copyButton
       }
       if !subtitle.isEmpty {
         subTitleText
-          .lineLimit(1)
           .minimumScaleFactor(0.5)
+          .lineLimit(1)
+          .layoutPriority(0)
+          .frame(minHeight: 22)
       }
     }
   }
@@ -47,10 +51,10 @@ public struct W3WMainAddressView: View {
 private extension W3WMainAddressView {
   var titleText: some View {
     Text("///")
-      .foregroundColor(theme?.brandBase?.suColor)
+      .foregroundColor(theme?.brandBase?.current.suColor)
       .font(titleScheme?.styles?.font?.suFont)
     + Text(title)
-      .foregroundColor(titleScheme?.colors?.foreground?.suColor)
+      .foregroundColor(titleScheme?.colors?.foreground?.current.suColor)
       .font(titleScheme?.styles?.font?.suFont)
   }
   
@@ -74,7 +78,7 @@ private extension W3WMainAddressView {
 
 private extension W3WMainAddressView {
   var titleScheme: W3WScheme? {
-    let scheme = W3WTheme.what3words.labelScheme(grade: .tertiary, fontStyle: .largeTitle, weight: .black)
+    let scheme = theme?.labelScheme(grade: .tertiary, fontStyle: .largeTitle, weight: .black)
     return scheme
   }
   
