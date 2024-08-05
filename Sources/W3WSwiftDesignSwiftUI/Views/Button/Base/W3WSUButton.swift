@@ -11,36 +11,44 @@ public struct W3WSUButton: View {
   var title: String = ""
   var iconImage: W3WImage?
   var uiImage: UIImage?
+  var iconSize: CGFloat = 24
   let scheme: W3WScheme?
   var isExpandable: Bool = false
+  var hasBackground: Bool = true
   var action: (() -> Void) = {}
   
   public init(
     title: String = "",
     iconImage: W3WImage? = nil,
     uiImage: UIImage? = nil,
+    iconSize: CGFloat = 24,
     scheme: W3WScheme? = nil,
     isExpandable: Bool = false,
+    hasBackground: Bool = true,
     action: @escaping () -> Void = {}
   ) {
     self.title = title
     self.iconImage = iconImage
     self.uiImage = uiImage
+    self.iconSize = iconSize
     self.scheme = scheme
+    self.hasBackground = hasBackground
     self.isExpandable = isExpandable
     self.action = action
   }
+  
   public var body: some View {
     W3WBaseButton(
       title: title,
-      font: nil,
+      scheme: scheme ?? .standard,
       iconImage: iconImage,
       uiImage: uiImage,
+      iconSize: iconSize,
       horizontalPadding: scheme?.styles?.padding?.left,
       verticalPadding: scheme?.styles?.padding?.top,
       isExpandable: isExpandable,
-      backgroundColor: scheme?.colors?.background?.suColor,
-      forgroundColor: scheme?.colors?.foreground?.suColor,
+      backgroundColor: hasBackground ? scheme?.colors?.background?.current.suColor : .clear,
+      forgroundColor: scheme?.colors?.foreground?.current.suColor,
       action: action
     )
   }

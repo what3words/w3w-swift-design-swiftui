@@ -10,7 +10,7 @@ import W3WSwiftThemes
 
 struct W3WBaseButton: View {
   var title: String = ""
-  var font: UIFont = .systemFont(ofSize: 16)
+  var scheme: W3WScheme = .standard
   var iconImage: W3WImage?
   var uiImage: UIImage?
   var iconSize: CGFloat = 24
@@ -26,7 +26,7 @@ struct W3WBaseButton: View {
   
   init(
     title: String = "",
-    font: UIFont? = .systemFont(ofSize: 16),
+    scheme: W3WScheme = .standard,
     iconImage: W3WImage? = nil,
     uiImage: UIImage? = nil,
     iconSize: CGFloat? = 24,
@@ -40,9 +40,7 @@ struct W3WBaseButton: View {
     action: (@escaping () -> Void) = {}
   ) {
     self.title = title
-    if let font {
-      self.font = font
-    }
+    self.scheme = scheme
 
     self.iconImage = iconImage
     self.uiImage = uiImage
@@ -119,8 +117,10 @@ private extension W3WBaseButton {
   var titleLabel: some View {
     HStack {
       icon
-      Text(title)
-        .useFont(font)
+      if !title.isEmpty {
+        Text(title)
+          .font(scheme.styles?.font?.suFont)
+      }
     }
     .foregroundColor(forgroundColor)
     .padding(.vertical, verticalPadding)

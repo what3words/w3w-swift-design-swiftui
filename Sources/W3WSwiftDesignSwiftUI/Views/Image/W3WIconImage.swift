@@ -14,7 +14,7 @@ public struct W3WIconImage: View {
   private(set) public var color: Color?
   private(set) public var font: Font?
   
-  init(
+  public init(
     iconImage: W3WImage? = nil,
     uiImage: UIImage? = nil,
     iconSize: CGFloat = 24,
