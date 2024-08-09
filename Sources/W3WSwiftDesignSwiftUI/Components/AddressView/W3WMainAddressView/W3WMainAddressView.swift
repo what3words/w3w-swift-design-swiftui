@@ -8,26 +8,28 @@
 import SwiftUI
 import W3WSwiftThemes
 
-public struct W3WMainAddressView<Content: View>: View {
+public struct W3WMainAddressView: View {
   var theme: W3WTheme?
   var title: String = ""
   var subtitle: String = ""
-  var shouldShowSubview: Bool = false
-  var subView: Content
-  var action: (() -> Void) = {}
+  var nearLocation: String = ""
+  var shouldShowNearLocation: Bool = false
+  var copyAction: (() -> Void) = {}
   
   public init(
     theme: W3WTheme? = nil,
     title: String = "",
     subtitle: String = "",
-    shouldShowSubview: Bool = false,
-    @ViewBuilder subView: () -> Content
+    nearLocation: String = "",
+    shouldShowNearLocation: Bool = false,
+    copyAction: @escaping (() -> Void) = {}
   ) {
     self.theme = theme
     self.title = title
     self.subtitle = subtitle
-    self.shouldShowSubview = shouldShowSubview
-    self.subView = subView()
+    self.nearLocation = nearLocation
+    self.shouldShowNearLocation = shouldShowNearLocation
+    self.copyAction = copyAction
   }
   
   public var body: some View {
@@ -41,6 +43,7 @@ public struct W3WMainAddressView<Content: View>: View {
         Spacer()
         copyButton
       }
+      .accessibilityElement()
       if !subtitle.isEmpty {
         subTitleText
           .minimumScaleFactor(0.5)
@@ -49,8 +52,8 @@ public struct W3WMainAddressView<Content: View>: View {
           .frame(minHeight: 22)
       }
       
-      if shouldShowSubview {
-        subviewStack
+      if shouldShowNearLocation {
+        nearLocationText
       }
     }
   }
@@ -60,35 +63,41 @@ public struct W3WMainAddressView<Content: View>: View {
 
 private extension W3WMainAddressView {
   var titleText: some View {
-    Text("///")
-      .foregroundColor(theme?.brandBase?.current.suColor)
-      .font(titleScheme?.styles?.font?.suFont)
+    dashText
     + Text(title)
       .foregroundColor(titleScheme?.colors?.foreground?.current.suColor)
       .font(titleScheme?.styles?.font?.suFont)
   }
   
   var subTitleText: some View {
-    Text("///")
-      .foregroundColor(Color.clear)
-      .font(subtitleScheme?.styles?.font?.suFont)
+    clearDashText
     + Text(subtitle)
       .foregroundColor(Color.black)
       .font(subtitleScheme?.styles?.font?.suFont)
   }
   
-  var subviewStack: some View {
-    HStack(spacing: 2) {
-      Text("///")
-        .foregroundColor(Color.clear)
-        .font(subtitleScheme?.styles?.font?.suFont)
-      subView
-    }
+  var nearLocationText: some View {
+    clearDashText
+    + Text(nearLocation)
+      .foregroundColor(Color.black)
+      .font(subtitleScheme?.styles?.font?.suFont)
   }
   
+  var dashText: Text {
+    Text("///")
+      .foregroundColor(theme?.brandBase?.current.suColor)
+      .font(titleScheme?.styles?.font?.suFont)
+  }
+  
+  var clearDashText: Text {
+    Text("///")
+      .foregroundColor(.clear)
+      .font(titleScheme?.styles?.font?.suFont)
+  }
+
   var copyButton: some View {
     Button {
-      action()
+      copyAction()
     } label: {
       W3WIconImage(
         iconImage: .docOnDoc,
@@ -100,8 +109,7 @@ private extension W3WMainAddressView {
 
 private extension W3WMainAddressView {
   var titleScheme: W3WScheme? {
-    let scheme = theme?.labelScheme(grade: .tertiary, fontStyle: .largeTitle, weight: .semibold)
-    return scheme
+    theme?.labelScheme(grade: .tertiary, fontStyle: .largeTitle, weight: .semibold)
   }
   
   var subtitleScheme: W3WScheme? {
@@ -117,20 +125,6 @@ private extension W3WMainAddressView {
     W3WMainAddressView(
       title: "Long title like thissssssssssssssssssssssssssssssssssssssssssssssssss"
     ) {}
-  }
-  .padding()
-}
-
-#Preview("With subView") {
-  VStack {
-    W3WMainAddressView(
-      title: "Short title",
-      shouldShowSubview: true
-    ) { Text("ABCDE") }
-    W3WMainAddressView(
-      title: "Long title like thissssssssssssssssssssssssssssssssssssssssssssssssss",
-      shouldShowSubview: true
-    ) { Text("ABCDE") }
   }
   .padding()
 }
