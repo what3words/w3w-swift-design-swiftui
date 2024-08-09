@@ -3,10 +3,10 @@
     {
       "identity" : "w3w-swift-themes",
       "kind" : "remoteSourceControl",
-      "location" : "git@github.com:what3words/w3w-swift-themes.git",
+      "location" : "https://github.com/what3words/w3w-swift-themes.git",
       "state" : {
-        "revision" : "17b28814d3fed54337d35d67ce15e09e825c8550",
-        "version" : "1.1.2"
+        "branch" : "staging",
+        "revision" : "1eb16e94792c71d23f4434fb724983b8e5a0c7c2"
       }
     }
   ],
