@@ -14,6 +14,7 @@ public struct W3WMainAddressView: View {
   var subtitle: String = ""
   var nearLocation: String = ""
   var shouldShowNearLocation: Bool = false
+  var shouldShowSecondaryPlaceholder: Bool = false
   var copyAction: (() -> Void) = {}
   
   public init(
@@ -33,7 +34,7 @@ public struct W3WMainAddressView: View {
   }
   
   public var body: some View {
-    VStack(alignment: .leading, spacing: 4) {
+    VStack(alignment: .leading, spacing: 0) {
       HStack {
         titleText
           .minimumScaleFactor(0.5)
@@ -49,7 +50,11 @@ public struct W3WMainAddressView: View {
           .minimumScaleFactor(0.5)
           .lineLimit(1)
           .layoutPriority(0)
-          .frame(minHeight: 22)
+          .frame(minHeight: 40)
+      }
+      
+      if shouldShowSecondaryPlaceholder {
+        addressPlaceHolder
       }
       
       if shouldShowNearLocation {
@@ -72,14 +77,14 @@ private extension W3WMainAddressView {
   var subTitleText: some View {
     clearDashText
     + Text(subtitle)
-      .foregroundColor(Color.black)
+      .foregroundColor(subtitleScheme?.colors?.foreground?.current.suColor)
       .font(subtitleScheme?.styles?.font?.suFont)
   }
   
   var nearLocationText: some View {
     clearDashText
     + Text(nearLocation)
-      .foregroundColor(Color.black)
+      .foregroundColor(subtitleScheme?.colors?.foreground?.current.suColor)
       .font(subtitleScheme?.styles?.font?.suFont)
   }
   
@@ -103,6 +108,13 @@ private extension W3WMainAddressView {
         iconImage: .docOnDoc,
         color: titleScheme?.colors?.foreground?.current.suColor
       )
+    }
+  }
+  
+  var addressPlaceHolder: some View {
+    HStack {
+      clearDashText
+      W3WAddressPlaceholderView(color: theme?.labelsQuaternary?.suColor)
     }
   }
 }
