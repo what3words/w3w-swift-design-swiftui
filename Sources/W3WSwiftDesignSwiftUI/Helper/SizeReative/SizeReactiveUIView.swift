@@ -87,6 +87,26 @@ public class SizeReactiveUIView<Content: View>: UIView {
   }
 }
 
+// MARK: - Getters
+
+extension SizeReactiveUIView {
+  var currentHeight: CGFloat {
+    if let heightConstraint = self.constraints.first(where: { $0.firstAttribute == .height }) {
+      return heightConstraint.constant
+    }
+    
+    return 0
+  }
+  
+  var currentWidth: CGFloat {
+    if let widthConstraint = self.constraints.first(where: { $0.firstAttribute == .width }) {
+      return widthConstraint.constant
+    }
+    
+    return 0
+  }
+}
+
 extension UIHostingController {
   func disableSafeArea() {
     guard let viewClass = object_getClass(view) else { return }

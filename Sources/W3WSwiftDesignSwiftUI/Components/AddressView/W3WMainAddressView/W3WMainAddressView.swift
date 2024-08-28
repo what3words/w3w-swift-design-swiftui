@@ -15,6 +15,7 @@ public struct W3WMainAddressView: View {
   var nearLocation: String = ""
   var shouldShowNearLocation: Bool = false
   var shouldShowSecondaryPlaceholder: Bool = false
+  var shouldShowCopyButton: Bool = true
   var copyAction: (() -> Void) = {}
   
   @State private var textWidth: CGFloat = 0
@@ -26,6 +27,7 @@ public struct W3WMainAddressView: View {
     nearLocation: String = "",
     shouldShowNearLocation: Bool = false,
     shouldShowSecondaryPlaceholder: Bool = false,
+    shouldShowCopyButton: Bool = true,
     copyAction: @escaping (() -> Void) = {}
   ) {
     self.theme = theme
@@ -34,6 +36,7 @@ public struct W3WMainAddressView: View {
     self.nearLocation = nearLocation
     self.shouldShowNearLocation = shouldShowNearLocation
     self.shouldShowSecondaryPlaceholder = shouldShowSecondaryPlaceholder
+    self.shouldShowCopyButton = shouldShowCopyButton
     self.copyAction = copyAction
   }
   
@@ -47,7 +50,9 @@ public struct W3WMainAddressView: View {
           .scaledToFit()
           .frame(minHeight: 40)
         Spacer()
-        copyButton
+        if shouldShowCopyButton {
+          copyButton
+        }
       }
       .accessibilityElement()
       
