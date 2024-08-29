@@ -14,7 +14,11 @@ public struct W3WMainAddressView: View {
   var subtitle: String = ""
   var nearLocation: String = ""
   var shouldShowNearLocation: Bool = false
+  var shouldShowSecondaryPlaceholder: Bool = false
+  var shouldShowCopyButton: Bool = true
   var copyAction: (() -> Void) = {}
+  
+  @State private var textWidth: CGFloat = 0
   
   public init(
     theme: W3WTheme? = nil,
@@ -22,6 +26,8 @@ public struct W3WMainAddressView: View {
     subtitle: String = "",
     nearLocation: String = "",
     shouldShowNearLocation: Bool = false,
+    shouldShowSecondaryPlaceholder: Bool = false,
+    shouldShowCopyButton: Bool = true,
     copyAction: @escaping (() -> Void) = {}
   ) {
     self.theme = theme
@@ -29,33 +35,53 @@ public struct W3WMainAddressView: View {
     self.subtitle = subtitle
     self.nearLocation = nearLocation
     self.shouldShowNearLocation = shouldShowNearLocation
+    self.shouldShowSecondaryPlaceholder = shouldShowSecondaryPlaceholder
+    self.shouldShowCopyButton = shouldShowCopyButton
     self.copyAction = copyAction
   }
   
   public var body: some View {
-    VStack(alignment: .leading, spacing: 4) {
+    VStack(alignment: .leading, spacing: 0) {
       HStack {
         titleText
           .minimumScaleFactor(0.5)
           .lineLimit(1)
           .layoutPriority(1)
+          .scaledToFit()
           .frame(minHeight: 40)
         Spacer()
-        copyButton
+        if shouldShowCopyButton {
+          copyButton
+        }
       }
       .accessibilityElement()
+      
       if !subtitle.isEmpty {
-        subTitleText
-          .minimumScaleFactor(0.5)
-          .lineLimit(1)
-          .layoutPriority(0)
-          .frame(minHeight: 22)
+        HStack {
+          Spacer().frame(width: textWidth)
+          subTitleText
+            .minimumScaleFactor(0.5)
+            .lineLimit(1)
+            .layoutPriority(0)
+            .frame(minHeight: 32)
+        }
+      }
+      
+      if shouldShowSecondaryPlaceholder {
+        HStack {
+          Spacer().frame(width: textWidth)
+          addressPlaceHolder
+        }
       }
       
       if shouldShowNearLocation {
-        nearLocationText
+        HStack {
+          Spacer().frame(width: textWidth)
+          nearLocationText
+        }
       }
     }
+    .accessibilityElement()
   }
 }
 
@@ -63,23 +89,31 @@ public struct W3WMainAddressView: View {
 
 private extension W3WMainAddressView {
   var titleText: some View {
-    dashText
-    + Text(title)
-      .foregroundColor(titleScheme?.colors?.foreground?.current.suColor)
-      .font(titleScheme?.styles?.font?.suFont)
+    HStack(spacing: 0) {
+      Text("///")
+        .foregroundColor(theme?.brandBase?.current.suColor)
+        .font(titleScheme?.styles?.font?.suFont)
+        .background(GeometryReader { geometry in
+          Color.clear
+            .onAppear {
+              textWidth = geometry.size.width
+            }
+        })
+      Text(title)
+        .foregroundColor(titleScheme?.colors?.foreground?.current.suColor)
+        .font(titleScheme?.styles?.font?.suFont)
+    }
   }
   
   var subTitleText: some View {
-    clearDashText
-    + Text(subtitle)
-      .foregroundColor(Color.black)
+    Text(subtitle)
+      .foregroundColor(subtitleScheme?.colors?.foreground?.current.suColor)
       .font(subtitleScheme?.styles?.font?.suFont)
   }
   
   var nearLocationText: some View {
-    clearDashText
-    + Text(nearLocation)
-      .foregroundColor(Color.black)
+    Text(nearLocation)
+      .foregroundColor(subtitleScheme?.colors?.foreground?.current.suColor)
       .font(subtitleScheme?.styles?.font?.suFont)
   }
   
@@ -89,12 +123,6 @@ private extension W3WMainAddressView {
       .font(titleScheme?.styles?.font?.suFont)
   }
   
-  var clearDashText: Text {
-    Text("///")
-      .foregroundColor(.clear)
-      .font(titleScheme?.styles?.font?.suFont)
-  }
-
   var copyButton: some View {
     Button {
       copyAction()
@@ -104,6 +132,10 @@ private extension W3WMainAddressView {
         color: titleScheme?.colors?.foreground?.current.suColor
       )
     }
+  }
+  
+  var addressPlaceHolder: some View {
+    W3WAddressPlaceholderView(color: theme?.labelsQuaternary?.suColor)
   }
 }
 
