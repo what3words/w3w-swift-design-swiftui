@@ -9,7 +9,6 @@ import SwiftUI
 import W3WSwiftThemes
 
 public struct W3WActionItemCell: View {
-
   var viewModel: W3WActionItemCellViewModelProtocol
   var action: (() -> Void)
   
@@ -112,8 +111,17 @@ private extension W3WActionItemCell {
       W3WActionItemCell(
         viewModel: W3WActionItemCellViewModel(
           scheme: W3WTheme(theme: .what3words).schemes[.cells],
-          iconImage: W3WImage.arrowLeft,
+          iconImage: W3WImage.camera,
           title: "Testing"),
+        action: {
+          
+        }
+      )
+      W3WActionItemCell(
+        viewModel: W3WActionItemCellViewModel(
+          scheme: W3WTheme(theme: .what3words).schemes[.cells],
+          iconImage: W3WImage.badgeFill,
+          title: "Badge"),
         action: {
           
         }
