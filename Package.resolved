@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/what3words/w3w-swift-themes.git",
       "state" : {
-        "branch" : "staging",
-        "revision" : "1eb16e94792c71d23f4434fb724983b8e5a0c7c2"
+        "revision" : "bd201b3c09d7d2cb7dc88423ea034de92fa3334b",
+        "version" : "1.2.0"
       }
     }
   ],
