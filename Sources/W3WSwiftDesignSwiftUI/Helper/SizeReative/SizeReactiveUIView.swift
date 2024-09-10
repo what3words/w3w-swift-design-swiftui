@@ -8,12 +8,16 @@
 import UIKit
 import SwiftUI
 import Combine
+import W3WSwiftCore
 
 public class SizeReactiveUIView<Content: View>: UIView {
   private var cancellables: Set<AnyCancellable> = []
   
   var isHeightReactive: Bool
   var isWidthReactive: Bool
+  
+  public var onHeightChanged = W3WEvent<CGFloat>()
+  public var onWidthChanged = W3WEvent<CGFloat>()
   
   public init(
     isHeightReactive: Bool = false,
@@ -76,6 +80,8 @@ public class SizeReactiveUIView<Content: View>: UIView {
     } else {
       self.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
+    
+    onHeightChanged.send(height)
   }
   
   private func updateNewWidth(_ width: CGFloat) {
@@ -84,6 +90,8 @@ public class SizeReactiveUIView<Content: View>: UIView {
     } else {
       self.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
+    
+    onWidthChanged.send(width)
   }
 }
 
