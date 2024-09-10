@@ -15,6 +15,9 @@ public class SizeReactiveUIView<Content: View>: UIView {
   var isHeightReactive: Bool
   var isWidthReactive: Bool
   
+  public var onHeightChanged = PassthroughSubject<CGFloat, Never>()
+  public var onWidthChanged = PassthroughSubject<CGFloat, Never>()
+  
   public init(
     isHeightReactive: Bool = false,
     isWidthReactive: Bool = false,
@@ -76,6 +79,8 @@ public class SizeReactiveUIView<Content: View>: UIView {
     } else {
       self.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
+    
+    onHeightChanged.send(height)
   }
   
   private func updateNewWidth(_ width: CGFloat) {
@@ -84,6 +89,8 @@ public class SizeReactiveUIView<Content: View>: UIView {
     } else {
       self.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
+    
+    onWidthChanged.send(width)
   }
 }
 
