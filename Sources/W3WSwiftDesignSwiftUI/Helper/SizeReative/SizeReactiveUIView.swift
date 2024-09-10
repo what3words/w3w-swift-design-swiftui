@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 import Combine
+import W3WSwiftCore
 
 public class SizeReactiveUIView<Content: View>: UIView {
   private var cancellables: Set<AnyCancellable> = []
@@ -15,8 +16,8 @@ public class SizeReactiveUIView<Content: View>: UIView {
   var isHeightReactive: Bool
   var isWidthReactive: Bool
   
-  public var onHeightChanged = PassthroughSubject<CGFloat, Never>()
-  public var onWidthChanged = PassthroughSubject<CGFloat, Never>()
+  public var onHeightChanged = W3WEvent<CGFloat>()
+  public var onWidthChanged = W3WEvent<CGFloat>()
   
   public init(
     isHeightReactive: Bool = false,
