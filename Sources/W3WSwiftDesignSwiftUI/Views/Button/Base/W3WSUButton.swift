@@ -46,6 +46,7 @@ public struct W3WSUButton: View {
       iconSize: iconSize,
       horizontalPadding: scheme?.styles?.padding?.left,
       verticalPadding: scheme?.styles?.padding?.top,
+      cornerRadius: scheme?.styles?.cornerRadius?.value ?? 0.0,
       isExpandable: isExpandable,
       backgroundColor: hasBackground ? scheme?.colors?.background?.current.suColor : .clear,
       forgroundColor: scheme?.colors?.foreground?.current.suColor,
