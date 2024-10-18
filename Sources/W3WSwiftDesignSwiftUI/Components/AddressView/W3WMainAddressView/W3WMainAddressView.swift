@@ -54,7 +54,6 @@ public struct W3WMainAddressView: View {
           copyButton
         }
       }
-      .accessibilityElement()
       
       if !subtitle.isEmpty {
         HStack {
@@ -81,7 +80,6 @@ public struct W3WMainAddressView: View {
         }
       }
     }
-    .accessibilityElement()
   }
 }
 
@@ -103,6 +101,7 @@ private extension W3WMainAddressView {
         .foregroundColor(titleScheme?.colors?.foreground?.current.suColor)
         .font(titleScheme?.styles?.font?.suFont)
     }
+    .accessibilityElement()
   }
   
   var subTitleText: some View {
@@ -131,7 +130,9 @@ private extension W3WMainAddressView {
         iconImage: .docOnDoc,
         color: titleScheme?.colors?.foreground?.current.suColor
       )
+      .padding(W3WPadding.light.value)
     }
+    .accessibilityElement()
   }
   
   var addressPlaceHolder: some View {
