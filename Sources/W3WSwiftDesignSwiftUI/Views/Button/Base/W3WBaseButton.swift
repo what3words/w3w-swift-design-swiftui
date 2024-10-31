@@ -120,6 +120,7 @@ private extension W3WBaseButton {
       if !title.isEmpty {
         Text(title)
           .font(scheme.styles?.font?.suFont)
+          .fixedSize(horizontal: true, vertical: false)
       }
     }
     .foregroundColor(forgroundColor)
