@@ -44,7 +44,7 @@ public struct W3WMainAddressView: View {
     VStack(alignment: .leading, spacing: 0) {
       HStack {
         titleText
-          .minimumScaleFactor(0.5)
+          .minimumScaleFactor(0.2)
           .lineLimit(1)
           .layoutPriority(1)
           .scaledToFit()
