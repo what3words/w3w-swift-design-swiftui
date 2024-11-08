@@ -17,6 +17,7 @@ public struct W3WMainAddressView: View {
   var shouldShowSecondaryPlaceholder: Bool = false
   var shouldShowCopyButton: Bool = true
   var copyAction: (() -> Void) = {}
+  var longPressCopyAction: (() -> Void) = {}
   
   @State private var textWidth: CGFloat = 0
   
@@ -28,7 +29,8 @@ public struct W3WMainAddressView: View {
     shouldShowNearLocation: Bool = false,
     shouldShowSecondaryPlaceholder: Bool = false,
     shouldShowCopyButton: Bool = true,
-    copyAction: @escaping (() -> Void) = {}
+    copyAction: @escaping (() -> Void) = {},
+    longPressCopyAction: @escaping (() -> Void) = {}
   ) {
     self.theme = theme
     self.title = title
@@ -38,6 +40,7 @@ public struct W3WMainAddressView: View {
     self.shouldShowSecondaryPlaceholder = shouldShowSecondaryPlaceholder
     self.shouldShowCopyButton = shouldShowCopyButton
     self.copyAction = copyAction
+    self.longPressCopyAction = longPressCopyAction
   }
   
   public var body: some View {
@@ -49,6 +52,12 @@ public struct W3WMainAddressView: View {
           .layoutPriority(1)
           .scaledToFit()
           .frame(minHeight: 40)
+          .cornerRadius(8, corners: .allCorners)
+          .contextMenu {
+            Button("Copy") {
+              longPressCopyAction()
+            }
+          }
         Spacer()
         if shouldShowCopyButton {
           copyButton
@@ -153,11 +162,9 @@ private extension W3WMainAddressView {
 #Preview("Without Subtitle") {
   VStack {
     W3WMainAddressView(
-      title: "Short title"
-    ) {}
+      title: "Short title", longPressCopyAction:  {})
     W3WMainAddressView(
-      title: "Long title like thissssssssssssssssssssssssssssssssssssssssssssssssss"
-    ) {}
+      title: "Long title like thissssssssssssssssssssssssssssssssssssssssssssssssss", longPressCopyAction:  {})
   }
   .padding()
 }
@@ -166,12 +173,11 @@ private extension W3WMainAddressView {
   VStack {
     W3WMainAddressView(
       title: "Short title",
-      subtitle: "Testing"
-    ) {}
+      subtitle: "Testing", longPressCopyAction:  {})
     W3WMainAddressView(
       title: "Long title like thissssssssssssssssssssssssssssssssssssssssssssssssss",
-      subtitle: "Testing"
-    ) {}
+      subtitle: "Testing",
+      longPressCopyAction:  {})
   }
   .padding()
 }
