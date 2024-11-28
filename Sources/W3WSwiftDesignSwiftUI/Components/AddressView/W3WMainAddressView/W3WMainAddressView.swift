@@ -44,8 +44,8 @@ public struct W3WMainAddressView: View {
   }
   
   public var body: some View {
-    VStack(alignment: .leading, spacing: 0) {
-      HStack {
+    HStack(alignment: .top) {
+      VStack(alignment: .leading, spacing: 0) {
         titleText
           .minimumScaleFactor(0.2)
           .lineLimit(1)
@@ -53,40 +53,40 @@ public struct W3WMainAddressView: View {
           .scaledToFit()
           .frame(minHeight: 40)
           .cornerRadius(8, corners: .allCorners)
-          .contextMenu {
-            Button("Copy") {
-              longPressCopyAction()
-            }
+        
+        if !subtitle.isEmpty {
+          HStack {
+            Spacer().frame(width: textWidth)
+            subTitleText
+              .minimumScaleFactor(0.5)
+              .lineLimit(1)
+              .layoutPriority(0)
+              .frame(minHeight: 32)
           }
-        Spacer()
-        if shouldShowCopyButton {
-          copyButton
+        }
+        
+        if shouldShowSecondaryPlaceholder {
+          HStack {
+            Spacer().frame(width: textWidth)
+            addressPlaceHolder
+          }
+        }
+        
+        if shouldShowNearLocation {
+          HStack {
+            Spacer().frame(width: textWidth)
+            nearLocationText
+          }
+        }
+      }.contextMenu {
+        Button("Copy") {
+          longPressCopyAction()
         }
       }
       
-      if !subtitle.isEmpty {
-        HStack {
-          Spacer().frame(width: textWidth)
-          subTitleText
-            .minimumScaleFactor(0.5)
-            .lineLimit(1)
-            .layoutPriority(0)
-            .frame(minHeight: 32)
-        }
-      }
-      
-      if shouldShowSecondaryPlaceholder {
-        HStack {
-          Spacer().frame(width: textWidth)
-          addressPlaceHolder
-        }
-      }
-      
-      if shouldShowNearLocation {
-        HStack {
-          Spacer().frame(width: textWidth)
-          nearLocationText
-        }
+      Spacer()
+      if shouldShowCopyButton {
+        copyButton
       }
     }
   }
