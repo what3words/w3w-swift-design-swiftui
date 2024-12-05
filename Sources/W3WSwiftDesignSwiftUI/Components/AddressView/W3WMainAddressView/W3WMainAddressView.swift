@@ -18,6 +18,8 @@ public struct W3WMainAddressView: View {
   var shouldShowCopyButton: Bool = true
   var copyAction: (() -> Void) = {}
   var longPressCopyAction: (() -> Void) = {}
+  var accessibilityLabel: String = ""
+  var copyButtonAccessibilityLabel: String = ""
   
   @State private var textWidth: CGFloat = 0
   
@@ -26,6 +28,8 @@ public struct W3WMainAddressView: View {
     title: String = "",
     subtitle: String = "",
     nearLocation: String = "",
+    accessibilityLabel: String = "",
+    copyButtonAccessibilityLabel: String = "",
     shouldShowNearLocation: Bool = false,
     shouldShowSecondaryPlaceholder: Bool = false,
     shouldShowCopyButton: Bool = true,
@@ -41,52 +45,42 @@ public struct W3WMainAddressView: View {
     self.shouldShowCopyButton = shouldShowCopyButton
     self.copyAction = copyAction
     self.longPressCopyAction = longPressCopyAction
+    self.accessibilityLabel = accessibilityLabel
+    self.copyButtonAccessibilityLabel = copyButtonAccessibilityLabel
   }
   
   public var body: some View {
     HStack(alignment: .top) {
-      VStack(alignment: .leading, spacing: 0) {
-        titleText
-          .minimumScaleFactor(0.2)
-          .lineLimit(1)
-          .layoutPriority(1)
-          .scaledToFit()
-          .frame(minHeight: 40)
-          .cornerRadius(8, corners: .allCorners)
-        
-        if !subtitle.isEmpty {
-          HStack {
-            Spacer().frame(width: textWidth)
-            subTitleText
-              .minimumScaleFactor(0.5)
-              .lineLimit(1)
-              .layoutPriority(0)
-              .frame(minHeight: 32)
+      if #available(iOS 14.0, *) {
+        contentView
+          .accessibilityLabel(accessibilityLabel)
+          .contextMenu {
+            Button("Copy") {
+              longPressCopyAction()
+            }
           }
-        }
-        
-        if shouldShowSecondaryPlaceholder {
-          HStack {
-            Spacer().frame(width: textWidth)
-            addressPlaceHolder
+      } else {
+        contentView
+          .accessibility(addTraits: .isButton)
+          .accessibility(label: Text(accessibilityLabel))
+          .contextMenu {
+            Button("Copy") {
+              longPressCopyAction()
+            }
           }
-        }
-        
-        if shouldShowNearLocation {
-          HStack {
-            Spacer().frame(width: textWidth)
-            nearLocationText
-          }
-        }
-      }.contextMenu {
-        Button("Copy") {
-          longPressCopyAction()
-        }
       }
       
       Spacer()
       if shouldShowCopyButton {
-        copyButton
+        if #available(iOS 14.0, *) {
+          copyButton
+            .accessibilityAddTraits(.isButton)
+            .accessibilityLabel(copyButtonAccessibilityLabel)
+        } else {
+          copyButton
+            .accessibility(addTraits: .isButton)
+            .accessibility(label: Text(copyButtonAccessibilityLabel))
+        }
       }
     }
   }
@@ -95,6 +89,31 @@ public struct W3WMainAddressView: View {
 // MARK: - View
 
 private extension W3WMainAddressView {
+  var contentView: some View {
+    VStack(alignment: .leading, spacing: 0) {
+      titleText
+      
+      if !subtitle.isEmpty {
+        subtitleStack
+      }
+      
+      if shouldShowSecondaryPlaceholder {
+        HStack {
+          Spacer().frame(width: textWidth)
+          addressPlaceHolder
+        }
+      }
+      
+      if shouldShowNearLocation {
+        HStack {
+          Spacer().frame(width: textWidth)
+          nearLocationText
+        }
+      }
+    }
+    .accessibilityElement(children: .combine)
+  }
+  
   var titleText: some View {
     HStack(spacing: 0) {
       Text("///")
@@ -110,7 +129,23 @@ private extension W3WMainAddressView {
         .foregroundColor(titleScheme?.colors?.foreground?.current.suColor)
         .font(titleScheme?.styles?.font?.suFont)
     }
-    .accessibilityElement()
+    .minimumScaleFactor(0.2)
+    .lineLimit(1)
+    .layoutPriority(1)
+    .scaledToFit()
+    .frame(minHeight: 40)
+    .cornerRadius(8, corners: .allCorners)
+  }
+  
+  var subtitleStack: some View {
+    HStack {
+      Spacer().frame(width: textWidth)
+      subTitleText
+        .minimumScaleFactor(0.5)
+        .lineLimit(1)
+        .layoutPriority(0)
+        .frame(minHeight: 32)
+    }
   }
   
   var subTitleText: some View {
@@ -141,7 +176,6 @@ private extension W3WMainAddressView {
       )
       .padding(W3WPadding.light.value)
     }
-    .accessibilityElement()
   }
   
   var addressPlaceHolder: some View {
