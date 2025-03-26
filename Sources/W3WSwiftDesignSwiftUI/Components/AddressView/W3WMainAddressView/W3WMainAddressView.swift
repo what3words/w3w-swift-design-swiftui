@@ -18,6 +18,7 @@ public struct W3WMainAddressView: View {
   var shouldShowCopyButton: Bool = true
   var copyAction: (() -> Void) = {}
   var longPressCopyAction: (() -> Void) = {}
+  var pressAction: (() -> Void) = {}
   var accessibilityLabel: String = ""
   var copyButtonAccessibilityLabel: String = ""
   
@@ -34,7 +35,8 @@ public struct W3WMainAddressView: View {
     shouldShowSecondaryPlaceholder: Bool = false,
     shouldShowCopyButton: Bool = true,
     copyAction: @escaping (() -> Void) = {},
-    longPressCopyAction: @escaping (() -> Void) = {}
+    longPressCopyAction: @escaping (() -> Void) = {},
+    pressAction: @escaping (() -> Void) = {}
   ) {
     self.theme = theme
     self.title = title
@@ -47,6 +49,7 @@ public struct W3WMainAddressView: View {
     self.longPressCopyAction = longPressCopyAction
     self.accessibilityLabel = accessibilityLabel
     self.copyButtonAccessibilityLabel = copyButtonAccessibilityLabel
+    self.pressAction = pressAction
   }
   
   public var body: some View {
@@ -112,6 +115,9 @@ private extension W3WMainAddressView {
       }
     }
     .accessibilityElement(children: .combine)
+    .onTapGesture {
+      pressAction()
+    }
   }
   
   var titleText: some View {
