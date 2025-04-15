@@ -2,7 +2,7 @@
 //  ReativeSizeWrapperView.swift
 //
 //
-//  Created by Khải Toàn Năng on 24/6/24.
+//  Created by Khai Do on 24/6/24.
 //
 
 import SwiftUI

@@ -2,7 +2,7 @@
 //  SwiftUIView.swift
 //
 //
-//  Created by Khải Toàn Năng on 23/02/2024.
+//  Created by Khai Do on 23/02/2024.
 //
 
 import SwiftUI

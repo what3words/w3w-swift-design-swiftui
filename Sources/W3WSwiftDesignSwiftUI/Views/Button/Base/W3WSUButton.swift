@@ -2,7 +2,7 @@
 //  SwiftUIView.swift
 //
 //
-//  Created by Khải Toàn Năng on 2/7/24.
+//  Created by Khai Do on 2/7/24.
 //
 
 import SwiftUI
@@ -56,32 +56,66 @@ public struct W3WSUButton: View {
 }
 
 #Preview {
-  ScrollView {
-    VStack {
-      W3WSUButton(title: "Primary Large", scheme: .buttonPrimaryLarge())
-      W3WSUButton(title: "Primary Medium", scheme: .buttonPrimaryMedium())
-      W3WSUButton(title: "Primary Small", scheme: .buttonPrimarySmall())
+  let firstTheme = W3WTheme.standard
+  let secondTheme = W3WTheme.what3words
+  
+  return ScrollView {
+    HStack {
+      VStack {
+        Text("First Theme")
+        W3WSUButton(title: "Primary Large", scheme: .buttonPrimaryLarge(theme: firstTheme))
+        W3WSUButton(title: "Primary Medium", scheme: .buttonPrimaryMedium(theme: firstTheme))
+        W3WSUButton(title: "Primary Small", scheme: .buttonPrimarySmall(theme: firstTheme))
+        
+        W3WSUButton(title: "Secondary Large", scheme: .buttonSecondaryLarge(theme: firstTheme))
+        W3WSUButton(title: "Secondary Medium", scheme: .buttonSecondaryMedium(theme: firstTheme))
+        W3WSUButton(title: "Secondary Small", scheme: .buttonSecondarySmall(theme: firstTheme))
+        
+        W3WSUButton(title: "Tertiary Large", scheme: .buttonTertiaryLarge(theme: firstTheme))
+        W3WSUButton(title: "Tertiary Medium", scheme: .buttonTertiaryMedium(theme: firstTheme))
+        W3WSUButton(title: "Tertiary Small", scheme: .buttonTertiarySmall(theme: firstTheme))
+        
+        W3WSUButton(title: "Quinary Large", scheme: .buttonQuinaryLarge(theme: firstTheme))
+        W3WSUButton(title: "Quinary Medium", scheme: .buttonQuinaryMedium(theme: firstTheme))
+        W3WSUButton(title: "Quinary Small", scheme: .buttonQuinarySmall(theme: firstTheme))
+        
+        W3WSUButton(title: "Senary Large", scheme: .buttonSenaryLarge(theme: firstTheme))
+        W3WSUButton(title: "Senary Medium", scheme: .buttonSenaryMedium(theme: firstTheme))
+        W3WSUButton(title: "Senary Small", scheme: .buttonSenarySmall(theme: firstTheme))
+        
+        W3WSUButton(title: "Septenary Large", scheme: .buttonSeptenaryLarge(theme: firstTheme))
+        W3WSUButton(title: "Septenary Medium", scheme: .buttonSeptenaryMedium(theme: firstTheme))
+        W3WSUButton(title: "Septenary Small", scheme: .buttonSeptenarySmall(theme: firstTheme))
+      }
       
-      W3WSUButton(title: "Secondary Large", scheme: .buttonSecondaryLarge())
-      W3WSUButton(title: "Secondary Medium", scheme: .buttonSecondaryMedium())
-      W3WSUButton(title: "Secondary Small", scheme: .buttonSecondarySmall())
-      
-      W3WSUButton(title: "Tertiary Large", scheme: .buttonTertiaryLarge())
-      W3WSUButton(title: "Tertiary Medium", scheme: .buttonTertiaryMedium())
-      W3WSUButton(title: "Tertiary Small", scheme: .buttonTertiarySmall())
-      
-      W3WSUButton(title: "Quinary Large", scheme: .buttonQuinaryLarge())
-      W3WSUButton(title: "Quinary Medium", scheme: .buttonQuinaryMedium())
-      W3WSUButton(title: "Quinary Small", scheme: .buttonQuinarySmall())
-      
-      W3WSUButton(title: "Senary Large", scheme: .buttonSenaryLarge())
-      W3WSUButton(title: "Senary Medium", scheme: .buttonSenaryMedium())
-      W3WSUButton(title: "Senary Small", scheme: .buttonSenarySmall())
-      
-      W3WSUButton(title: "Septenary Large", scheme: .buttonSeptenaryLarge())
-      W3WSUButton(title: "Septenary Medium", scheme: .buttonSeptenaryMedium())
-      W3WSUButton(title: "Septenary Small", scheme: .buttonSeptenarySmall())
+      VStack {
+        Text("Second Theme")
+        W3WSUButton(title: "Primary Large", scheme: .buttonPrimaryLarge(theme: secondTheme))
+        W3WSUButton(title: "Primary Medium", scheme: .buttonPrimaryMedium(theme: secondTheme))
+        W3WSUButton(title: "Primary Small", scheme: .buttonPrimarySmall(theme: secondTheme))
+        
+        W3WSUButton(title: "Secondary Large", scheme: .buttonSecondaryLarge(theme: secondTheme))
+        W3WSUButton(title: "Secondary Medium", scheme: .buttonSecondaryMedium(theme: secondTheme))
+        W3WSUButton(title: "Secondary Small", scheme: .buttonSecondarySmall(theme: secondTheme))
+        
+        W3WSUButton(title: "Tertiary Large", scheme: .buttonTertiaryLarge(theme: secondTheme))
+        W3WSUButton(title: "Tertiary Medium", scheme: .buttonTertiaryMedium(theme: secondTheme))
+        W3WSUButton(title: "Tertiary Small", scheme: .buttonTertiarySmall(theme: secondTheme))
+        
+        W3WSUButton(title: "Quinary Large", scheme: .buttonQuinaryLarge(theme: secondTheme))
+        W3WSUButton(title: "Quinary Medium", scheme: .buttonQuinaryMedium(theme: secondTheme))
+        W3WSUButton(title: "Quinary Small", scheme: .buttonQuinarySmall(theme: secondTheme))
+        
+        W3WSUButton(title: "Senary Large", scheme: .buttonSenaryLarge(theme: secondTheme))
+        W3WSUButton(title: "Senary Medium", scheme: .buttonSenaryMedium(theme: secondTheme))
+        W3WSUButton(title: "Senary Small", scheme: .buttonSenarySmall(theme: secondTheme))
+        
+        W3WSUButton(title: "Septenary Large", scheme: .buttonSeptenaryLarge(theme: secondTheme))
+        W3WSUButton(title: "Septenary Medium", scheme: .buttonSeptenaryMedium(theme: secondTheme))
+        W3WSUButton(title: "Septenary Small", scheme: .buttonSeptenarySmall(theme: secondTheme))
+      }
     }
     .frame(maxWidth: .infinity)
   }
+  .background(Color.green)
 }

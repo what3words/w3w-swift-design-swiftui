@@ -27,4 +27,23 @@ public extension View {
   func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
       clipShape( RoundedCorner(radius: radius, corners: corners) )
   }
+  
+  /**
+   Add an overlay on top of current view
+   - parameters:
+        - isVisible: should the overlay be visible or not
+        - alignment: Overlay view placement
+        - offsetX: Offset of the overlay on the X axis
+        - offsetY: Offset of the overlay on the Y axis
+        - overlayView: The overlay View on top of the current View
+   */
+  func cornerOverlay<Overlay: View>(
+      isVisible: Binding<Bool>,
+      alignment: Alignment = .topTrailing,
+      offsetX: CGFloat = 0,
+      offsetY: CGFloat = 0,
+      @ViewBuilder overlayView: @escaping () -> Overlay
+  ) -> some View {
+    self.modifier(CornerOverlayModifier(isVisible: isVisible, alignment: alignment,offsetX: offsetX, offsetY: offsetY, overlayView: overlayView))
+  }
 }
