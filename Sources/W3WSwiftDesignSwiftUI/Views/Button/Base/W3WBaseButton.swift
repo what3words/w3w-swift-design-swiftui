@@ -21,7 +21,10 @@ struct W3WBaseButton: View {
   var isExpandable: Bool = false
   var backgroundColor: Color = .blue
   var forgroundColor: Color = .white
-  
+  var borderColor: Color = .clear
+  var borderWidth: CGFloat = 0
+  var borderGradient: LinearGradient? = nil
+  var backgroundGradient: LinearGradient? = nil
   var action: (() -> Void) = {}
   
   init(
@@ -37,20 +40,25 @@ struct W3WBaseButton: View {
     isExpandable: Bool = false,
     backgroundColor: Color? = .blue,
     forgroundColor: Color? = .white,
+    borderColor: Color = .clear,
+    borderWidth: CGFloat = 0,
+    borderGradient: LinearGradient? = nil,
+    backgroundGradient: LinearGradient? = nil,
     action: (@escaping () -> Void) = {}
   ) {
     self.title = title
     self.scheme = scheme
-
+    
     self.iconImage = iconImage
     self.uiImage = uiImage
     self.isCapsuleBackground = isCapsuleBackground
     self.isExpandable = isExpandable
-    
+    self.borderColor = borderColor
+    self.borderWidth = borderWidth
     if let iconSize {
       self.iconSize = iconSize
     }
-
+    
     if let horizontalPadding {
       self.horizontalPadding = horizontalPadding
     }
@@ -58,7 +66,7 @@ struct W3WBaseButton: View {
     if let verticalPadding {
       self.verticalPadding = verticalPadding
     }
-
+    
     if let cornerRadius {
       self.cornerRadius = cornerRadius
     }
@@ -70,7 +78,15 @@ struct W3WBaseButton: View {
     if let forgroundColor {
       self.forgroundColor = forgroundColor
     }
-
+    
+    if let borderGradient {
+      self.borderGradient = borderGradient
+    }
+    
+    if let backgroundGradient {
+      self.backgroundGradient = backgroundGradient
+    }
+    
     self.action = action
   }
   
@@ -89,15 +105,10 @@ struct W3WBaseButton: View {
 private extension W3WBaseButton {
   @ViewBuilder
   var buttonLabel: some View {
-    if isCapsuleBackground {
-      titleView.clipShape(Capsule())
-    } else {
-      titleView.clipShape(
-        RoundedRectangle(
-          cornerRadius: cornerRadius
-        )
-      )
-    }
+    titleView
+      .background(backgroundView)
+      .clipShape(backgroundShape)
+      .overlay(borderOverlay)
   }
   
   var titleView: some View {
@@ -111,7 +122,6 @@ private extension W3WBaseButton {
           .padding(.horizontal, horizontalPadding)
       }
     }
-    .background(backgroundColor)
   }
   
   var titleLabel: some View {
@@ -125,7 +135,6 @@ private extension W3WBaseButton {
     }
     .foregroundColor(forgroundColor)
     .padding(.vertical, verticalPadding)
-
   }
   
   var icon: some View {
@@ -136,22 +145,99 @@ private extension W3WBaseButton {
       color: forgroundColor
     )
   }
-}
-
-#Preview("Text Only Buttons") {
-  VStack {
-    W3WBaseButton(title: "Normal Button")
-    W3WBaseButton(title: "Rounded Button", cornerRadius: 16)
-    W3WBaseButton(title: "Capsule Button", isCapsuleBackground: true)
-    W3WBaseButton(title: "Capsule Button", isCapsuleBackground: true).disabled(true)
+  
+  private var backgroundShape: some Shape {
+    isCapsuleBackground
+    ? AnyShape(Capsule())
+    : AnyShape(RoundedRectangle(cornerRadius: cornerRadius))
+  }
+  
+  @ViewBuilder
+  private var backgroundView: some View {
+    if let backgroundGradient {
+      backgroundGradient
+    } else {
+      backgroundColor
+    }
+  }
+  
+  @ViewBuilder
+  private var borderOverlay: some View {
+    if let borderGradient {
+      backgroundShape
+        .stroke(borderGradient, lineWidth: borderWidth)
+        
+    } else {
+      backgroundShape
+        .stroke(borderColor, lineWidth: borderWidth)
+    }
   }
 }
 
+#Preview("Text Only Buttons") {
+  ScrollView {
+    VStack {
+      W3WBaseButton(title: "Normal Button")
+      W3WBaseButton(title: "Rounded Button", cornerRadius: 16)
+      W3WBaseButton(title: "Capsule Button", isCapsuleBackground: true)
+      W3WBaseButton(
+        title: "Capsule Button with Border",
+        isCapsuleBackground: true,
+        borderColor: .red,
+        borderWidth: 3
+      )
+      
+      W3WBaseButton(
+        title: "Normal Button with Border",
+        isCapsuleBackground: false,
+        borderColor: .green,
+        borderWidth: 3
+      )
+      
+      W3WBaseButton(
+        title: "Background Gradient - Normal",
+        backgroundGradient: LinearGradient(colors: [.red, .green], startPoint: .leading, endPoint: .trailing)
+      )
+      
+      W3WBaseButton(
+        title: "Background Gradient - Capsule",
+        backgroundGradient: LinearGradient(colors: [.yellow, .blue], startPoint: .leading, endPoint: .trailing)
+      )
+      
+      W3WBaseButton(
+        title: "Background + Forground Gradient",
+        borderWidth: 3,
+        borderGradient: LinearGradient(colors: [.red, .black], startPoint: .leading, endPoint: .trailing),
+        backgroundGradient: LinearGradient(colors: [.gray, .pink], startPoint: .leading, endPoint: .trailing)
+      )
+      
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+  }
+  
+}
+
 #Preview("Icon and Label Buttons") {
-  VStack {
-    W3WBaseButton(title: "W3WImage Button", iconImage: .cameraFill)
-    W3WBaseButton(title: "UIImage Button", uiImage: .add)
-    W3WBaseButton(title: "Rounded Button", iconImage: .badgeFill, cornerRadius: 16)
-    W3WBaseButton(title: "Capsule Button", iconImage: .checkmark, isCapsuleBackground: true)
+  ScrollView {
+    VStack {
+      W3WBaseButton(title: "W3WImage Button", iconImage: .cameraFill)
+      W3WBaseButton(title: "UIImage Button", uiImage: .add)
+      W3WBaseButton(title: "Rounded Button", iconImage: .badgeFill, cornerRadius: 16)
+      W3WBaseButton(title: "Capsule Button", iconImage: .checkmark, isCapsuleBackground: true)
+      W3WBaseButton(
+        title: "Capsule Button with Border",
+        isCapsuleBackground: true,
+        borderColor: .red,
+        borderWidth: 3
+      )
+      
+      W3WBaseButton(
+        title: "Normal Button with Border",
+        isCapsuleBackground: false,
+        borderColor: .green,
+        borderWidth: 3
+      )
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
 }
