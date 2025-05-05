@@ -20,7 +20,7 @@ public struct ScrollableHStack<Content: View>: View {
     spacing: CGFloat? = 8,
     horizontalPadding: CGFloat = 0,
     verticalPadding: CGFloat = 0,
-    @ViewBuilder content: () -> Content
+    @ViewBuilder content: @escaping () -> Content
   ) {
     self.spacing = spacing
     self.horizontalPadding = horizontalPadding

@@ -18,7 +18,7 @@ public struct SizeReactiveWrapperView<Content: View>: DynamicSizeViewProtocol {
   let content: Content
   
   public init(
-    @ViewBuilder content: () -> Content
+    @ViewBuilder content: @escaping () -> Content
   ) {
     self.sizePublisher = CurrentValueSubject<CGSize, Never>(CGSize(width: 0, height: 0))
     self.content = content()

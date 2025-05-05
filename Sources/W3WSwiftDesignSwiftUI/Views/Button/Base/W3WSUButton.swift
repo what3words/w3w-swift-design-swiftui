@@ -13,16 +13,20 @@ public struct W3WSUButton: View {
   var uiImage: UIImage?
   var iconSize: CGFloat = 24
   let scheme: W3WScheme?
+  var isCapsuleBackground: Bool = false
   var isExpandable: Bool = false
   var hasBackground: Bool = true
   var action: (() -> Void) = {}
+  var contentSpacing: CGFloat = 0
   
   public init(
     title: String = "",
     iconImage: W3WImage? = nil,
     uiImage: UIImage? = nil,
     iconSize: CGFloat = 24,
+    contentSpacing: CGFloat = 0,
     scheme: W3WScheme? = nil,
+    isCapsuleBackground: Bool = false,
     isExpandable: Bool = false,
     hasBackground: Bool = true,
     action: @escaping () -> Void = {}
@@ -31,8 +35,10 @@ public struct W3WSUButton: View {
     self.iconImage = iconImage
     self.uiImage = uiImage
     self.iconSize = iconSize
+    self.contentSpacing = contentSpacing
     self.scheme = scheme
     self.hasBackground = hasBackground
+    self.isCapsuleBackground = isCapsuleBackground
     self.isExpandable = isExpandable
     self.action = action
   }
@@ -44,9 +50,11 @@ public struct W3WSUButton: View {
       iconImage: iconImage,
       uiImage: uiImage,
       iconSize: iconSize,
-      horizontalPadding: scheme?.styles?.padding?.left,
-      verticalPadding: scheme?.styles?.padding?.top,
+      contentSpacing: contentSpacing,
+      horizontalPadding: scheme?.styles?.padding?.left ?? 0,
+      verticalPadding: scheme?.styles?.padding?.top ?? 0,
       cornerRadius: scheme?.styles?.cornerRadius?.value ?? 0.0,
+      isCapsuleBackground: isCapsuleBackground,
       isExpandable: isExpandable,
       backgroundColor: hasBackground ? scheme?.colors?.background?.current.suColor : .clear,
       forgroundColor: scheme?.colors?.foreground?.current.suColor,
