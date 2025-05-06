@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import W3WSwiftThemes
 
 public extension View {
   
@@ -38,12 +39,28 @@ public extension View {
         - overlayView: The overlay View on top of the current View
    */
   func cornerOverlay<Overlay: View>(
-      isVisible: Binding<Bool>,
+      isVisible: Bool,
       alignment: Alignment = .topTrailing,
       offsetX: CGFloat = 0,
       offsetY: CGFloat = 0,
       @ViewBuilder overlayView: @escaping () -> Overlay
   ) -> some View {
     self.modifier(CornerOverlayModifier(isVisible: isVisible, alignment: alignment,offsetX: offsetX, offsetY: offsetY, overlayView: overlayView))
+  }
+  
+  /**
+   Add shadow to view
+   - parameters:
+        - value: a config value that helps generate shadow
+   */
+  func shadow(
+    _ value: W3WShadow
+  ) -> some View {
+    self.shadow(
+      color: value.color.suColor.opacity(Double(value.opacity)),
+      radius: value.radius,
+      x: value.offsetX,
+      y: value.offsetY
+    )
   }
 }

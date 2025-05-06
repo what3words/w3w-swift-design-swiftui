@@ -27,7 +27,7 @@ public struct W3WActionPanelCell<Content: View>: View {
     title: String = "",
     underlineText: String = "",
     underlineAction: (() -> Void)? = nil,
-    @ViewBuilder rightItem: () -> Content
+    @ViewBuilder rightItem: @escaping () -> Content
   ) {
     self.theme = theme
     self.iconImage = iconImage

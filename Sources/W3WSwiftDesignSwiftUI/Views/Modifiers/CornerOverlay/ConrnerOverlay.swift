@@ -8,17 +8,31 @@
 import SwiftUI
 
 struct CornerOverlayModifier<Overlay: View>: ViewModifier {
-  @Binding var isVisible: Bool
+  var isVisible: Bool
   let alignment: Alignment
   let offsetX: CGFloat
   let offsetY: CGFloat
-  let overlayView: () -> Overlay
+  let overlayView: Overlay
+  
+  init(
+    isVisible: Bool = true,
+    alignment: Alignment = .topTrailing,
+    offsetX: CGFloat = 0,
+    offsetY: CGFloat = 0,
+    @ViewBuilder overlayView: @escaping () -> Overlay
+  ) {
+    self.isVisible = isVisible
+    self.alignment = alignment
+    self.offsetX = offsetX
+    self.offsetY = offsetY
+    self.overlayView = overlayView()
+  }
   
   func body(content: Content) -> some View {
     ZStack(alignment: alignment) {
       content
       if isVisible {
-        overlayView()
+        overlayView
           .offset(x: offsetX, y: offsetY)
           .transition(.opacity)
       }
@@ -27,34 +41,37 @@ struct CornerOverlayModifier<Overlay: View>: ViewModifier {
 }
 
 #Preview {
-  let overlay =   W3WIconImage(
+  let overlay = W3WIconImage(
     iconImage: .slashes,
-    iconSize: 16
+    iconSize: 16,
+    color: .white
   ).padding(4).background(Color.red).clipShape(Circle())
+
   
-  return ScrollView{
-    VStack {
+  ScrollableHStack {
+    HStack {
       W3WSUButton(title: "Top Left", scheme: .buttonPrimaryLarge())
-        .cornerOverlay(isVisible: .constant(true), alignment: .topLeading, offsetX: -6, offsetY: -6 ,overlayView: {
+        .cornerOverlay(isVisible: true, alignment: .topLeading, offsetX: -6, offsetY: -6 ,overlayView: {
           overlay
         })
       W3WSUButton(title: "Top Right", scheme: .buttonPrimaryLarge())
-        .cornerOverlay(isVisible: .constant(true), alignment: .topTrailing, offsetX: 6, offsetY: -6 ,overlayView: {
+        .cornerOverlay(isVisible: true, alignment: .topTrailing, offsetX: 6, offsetY: -6 ,overlayView: {
           overlay
         })
       W3WSUButton(title: "Bottom Left", scheme: .buttonPrimaryLarge())
-        .cornerOverlay(isVisible: .constant(true), alignment: .bottomLeading, offsetX: -6, offsetY: 6 ,overlayView: {
+        .cornerOverlay(isVisible: true, alignment: .bottomLeading, offsetX: -6, offsetY: 6 ,overlayView: {
           overlay
         })
       W3WSUButton(title: "Bottom Right", scheme: .buttonPrimaryLarge())
-        .cornerOverlay(isVisible: .constant(true), alignment: .bottomTrailing, offsetX: 6, offsetY: 6 ,overlayView: {
+        .cornerOverlay(isVisible: true, alignment: .bottomTrailing, offsetX: 6, offsetY: 6 ,overlayView: {
           overlay
         })
       W3WSUButton(title: "No offset", scheme: .buttonPrimaryLarge())
-        .cornerOverlay(isVisible: .constant(true),overlayView: {
+        .cornerOverlay(isVisible: true,overlayView: {
           overlay
         })
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .background(Color.green)
+    .padding(.vertical, 8)
   }
 }

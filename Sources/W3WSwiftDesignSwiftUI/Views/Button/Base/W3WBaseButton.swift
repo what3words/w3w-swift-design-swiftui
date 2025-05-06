@@ -17,6 +17,7 @@ struct W3WBaseButton: View {
   var horizontalPadding: CGFloat = 16
   var verticalPadding: CGFloat = 12
   var cornerRadius: CGFloat = 8
+  var contentSpacing: CGFloat = 0
   var isCapsuleBackground: Bool = false
   var isExpandable: Bool = false
   var backgroundColor: Color = .blue
@@ -33,6 +34,7 @@ struct W3WBaseButton: View {
     iconImage: W3WImage? = nil,
     uiImage: UIImage? = nil,
     iconSize: CGFloat? = 24,
+    contentSpacing: CGFloat = 0,
     horizontalPadding: CGFloat? = 16,
     verticalPadding: CGFloat? = 12,
     cornerRadius: CGFloat? = 8,
@@ -55,6 +57,8 @@ struct W3WBaseButton: View {
     self.isExpandable = isExpandable
     self.borderColor = borderColor
     self.borderWidth = borderWidth
+    self.contentSpacing = contentSpacing
+    
     if let iconSize {
       self.iconSize = iconSize
     }
@@ -125,7 +129,7 @@ private extension W3WBaseButton {
   }
   
   var titleLabel: some View {
-    HStack {
+    HStack(spacing: contentSpacing) {
       icon
       if !title.isEmpty {
         Text(title)
