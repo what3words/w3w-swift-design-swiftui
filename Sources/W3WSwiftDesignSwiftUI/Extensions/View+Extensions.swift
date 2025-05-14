@@ -54,13 +54,14 @@ public extension View {
         - value: a config value that helps generate shadow
    */
   func shadow(
-    _ value: W3WShadow
+    color: W3WColor,
+    style: W3WShadow
   ) -> some View {
     self.shadow(
-      color: value.color.suColor.opacity(Double(value.opacity)),
-      radius: value.radius,
-      x: value.offsetX,
-      y: value.offsetY
+      color: color.suColor.opacity(Double(style.opacity)),
+      radius: style.radius,
+      x: style.offsetX,
+      y: style.offsetY
     )
   }
 }
