@@ -30,17 +30,15 @@ public struct W3WIconImage: View {
     if let icon = iconImage {
       Image(uiImage: icon.get())
         .resizable()
-        .renderingMode(.template)
+        .imageColor(color)
         .scaledToFit()
         .squareFrame(w3wImageSize)
-        .foregroundColor(imageColor)
     } else if let image = uiImage {
       Image(uiImage: image)
         .resizable()
-        .renderingMode(.template)
+        .imageColor(color)
         .scaledToFit()
         .squareFrame(uiImageSize)
-        .foregroundColor(imageColor)
     } else {
       EmptyView()
     }
@@ -54,14 +52,6 @@ private extension W3WIconImage {
   
   private var uiImageSize: CGFloat {
     iconSize
-  }
-  
-  private var imageColor: Color {
-    guard let color else {
-      return .black
-    }
-    
-    return color
   }
 }
 
