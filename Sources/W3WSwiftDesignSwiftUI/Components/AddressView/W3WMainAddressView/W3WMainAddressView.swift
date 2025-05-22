@@ -140,7 +140,6 @@ private extension W3WMainAddressView {
     .layoutPriority(1)
     .scaledToFit()
     .frame(minHeight: 40)
-    .cornerRadius(8, corners: .allCorners)
   }
   
   var subtitleStack: some View {
