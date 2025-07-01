@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import W3WSwiftCore
 import W3WSwiftThemes
 
 public extension View {
@@ -63,5 +64,40 @@ public extension View {
       x: style.offsetX,
       y: style.offsetY
     )
+  }
+}
+
+// MARK: - Layout Direction
+public extension View {
+  /// Sets the SwiftUI view's layout direction based on the current
+  /// `UIView.appearance().semanticContentAttribute`.
+  ///
+  /// This lets the SwiftUI hierarchy adapt automatically to the global
+  /// UIKit appearance settings (e.g., force right-to-left).
+  ///
+  /// - Returns: A view with the applied layout direction.
+  func layoutDirectionFromAppearance() -> some View {
+    environment(\.layoutDirection, {
+      switch UIView.appearance().semanticContentAttribute {
+      case .forceRightToLeft: return .rightToLeft
+      default: return .leftToRight
+      }
+    }())
+  }
+  
+  /// Sets the SwiftUI view's layout direction based on a `W3WLanguage`'s writing direction.
+  ///
+  /// Use this if you want your layout to match the text direction of a specific language,
+  /// regardless of the system's or UIKit's global appearance.
+  ///
+  /// - Parameter language: A `W3WLanguage` instance; if nil or direction unknown, defaults to left-to-right.
+  /// - Returns: A view with the applied layout direction.
+  func layoutDirection(for language: W3WLanguage?) -> some View {
+    environment(\.layoutDirection, {
+      switch language?.direction() {
+      case .rightToLeft: .rightToLeft
+      default: .leftToRight
+      }
+    }())
   }
 }
