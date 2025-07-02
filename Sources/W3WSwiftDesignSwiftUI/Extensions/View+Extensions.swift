@@ -101,7 +101,3 @@ public extension View {
     }())
   }
 }
-
-// MARK: - Size Readers
-public extension View {
-}
