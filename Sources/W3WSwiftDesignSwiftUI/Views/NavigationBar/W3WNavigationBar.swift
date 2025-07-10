@@ -41,7 +41,9 @@ public struct W3WNavigationBar: View {
     .padding(.horizontal, 8)
     .frame(maxWidth: .infinity)
     .frame(height: 42)
-    .background(scheme?.colors?.secondaryBackground?.current.suColor)
+    .background(
+      scheme?.colors?.secondaryBackground?.current.suColor.edgesIgnoringSafeArea(.top)
+    )
   }
   
   private var backImage: UIImage {
