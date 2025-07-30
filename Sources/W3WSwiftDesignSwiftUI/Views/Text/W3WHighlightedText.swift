@@ -1,5 +1,5 @@
 //
-//  HighlightedText.swift
+//  W3WHighlightedText.swift
 //  w3w-swift-design-swiftui
 //
 //  Created by Kaley Nguyen on 30/7/25.
@@ -8,7 +8,7 @@ import SwiftUI
 import W3WSwiftThemes
 
 @available(iOS 15, *)
-public struct HighlightedText: View {
+public struct W3WHighlightedText: View {
   let text: String
   let color: Color?
   let font: W3WFont?
@@ -51,7 +51,7 @@ public struct HighlightedText: View {
 
 #Preview {
   if #available(iOS 15, *) {
-    HighlightedText(text: "Hello World", color: .black, highlightedText: "World", highlightedTextColor: .red)
+    W3WHighlightedText(text: "Hello World", color: .black, highlightedText: "World", highlightedTextColor: .red)
   } else {
     // Fallback on earlier versions
     Text("Hello World")
