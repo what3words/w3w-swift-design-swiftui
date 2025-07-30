@@ -7,7 +7,6 @@
 import SwiftUI
 import W3WSwiftThemes
 
-@available(iOS 15, *)
 public struct W3WHighlightedText: View {
   let text: String
   let color: Color?
@@ -31,9 +30,16 @@ public struct W3WHighlightedText: View {
   }
   
   public var body: some View {
-    Text(makeAttributedString())
+    if #available(iOS 15, *) {
+      return Text(makeAttributedString())
+    } else {
+      return Text(text)
+        .foregroundColor(color)
+        .font(font?.suFont)
+    }
   }
   
+  @available(iOS 15, *)
   private func makeAttributedString() -> AttributedString {
     var attributed = AttributedString(text)
     attributed.foregroundColor = color
@@ -50,10 +56,5 @@ public struct W3WHighlightedText: View {
 }
 
 #Preview {
-  if #available(iOS 15, *) {
-    W3WHighlightedText(text: "Hello World", color: .black, highlightedText: "World", highlightedTextColor: .red)
-  } else {
-    // Fallback on earlier versions
-    Text("Hello World")
-  }
+  W3WHighlightedText(text: "Hello World", color: .black, highlightedText: "World", highlightedTextColor: .red)
 }
