@@ -2,7 +2,7 @@
 //  SwiftUIView.swift
 //
 //
-//  Created by Khải Toàn Năng on 12/6/24.
+//  Created by Khai Do on 12/6/24.
 //
 
 import SwiftUI
@@ -20,7 +20,7 @@ public struct ScrollableHStack<Content: View>: View {
     spacing: CGFloat? = 8,
     horizontalPadding: CGFloat = 0,
     verticalPadding: CGFloat = 0,
-    @ViewBuilder content: () -> Content
+    @ViewBuilder content: @escaping () -> Content
   ) {
     self.spacing = spacing
     self.horizontalPadding = horizontalPadding

@@ -2,7 +2,7 @@
 //  SwiftUIView.swift
 //
 //
-//  Created by Khải Toàn Năng on 12/6/24.
+//  Created by Khai Do on 12/6/24.
 //
 
 import SwiftUI
@@ -17,8 +17,8 @@ public struct W3WActionPanel<NavBarContent: View, Content: View>: View {
   public init(
     shouldShowNavBar: Bool = false,
     cornerRadius: CGFloat = 8,
-    @ViewBuilder navigationBar: () -> NavBarContent,
-    @ViewBuilder content: () -> Content
+    @ViewBuilder navigationBar: @escaping () -> NavBarContent,
+    @ViewBuilder content: @escaping () -> Content
   ) {
     self.shouldShowNavBar = shouldShowNavBar
     self.cornerRadius = cornerRadius

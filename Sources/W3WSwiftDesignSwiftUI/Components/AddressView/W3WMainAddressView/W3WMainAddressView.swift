@@ -2,7 +2,7 @@
 //  W3WMainAddressView.swift
 //
 //
-//  Created by Khải Toàn Năng on 26/6/24.
+//  Created by Khai Do on 26/6/24.
 //
 
 import SwiftUI
@@ -140,7 +140,6 @@ private extension W3WMainAddressView {
     .layoutPriority(1)
     .scaledToFit()
     .frame(minHeight: 40)
-    .cornerRadius(8, corners: .allCorners)
   }
   
   var subtitleStack: some View {

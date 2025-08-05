@@ -2,7 +2,7 @@
 //  SwiftUIView.swift
 //  
 //
-//  Created by Khải Toàn Năng on 20/6/24.
+//  Created by Khai Do on 20/6/24.
 //
 
 import SwiftUI
@@ -27,7 +27,7 @@ public struct W3WActionPanelCell<Content: View>: View {
     title: String = "",
     underlineText: String = "",
     underlineAction: (() -> Void)? = nil,
-    @ViewBuilder rightItem: () -> Content
+    @ViewBuilder rightItem: @escaping () -> Content
   ) {
     self.theme = theme
     self.iconImage = iconImage
