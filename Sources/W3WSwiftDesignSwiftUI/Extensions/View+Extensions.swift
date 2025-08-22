@@ -107,4 +107,10 @@ public extension View {
   @ViewBuilder func hidden(_ shouldHide: Bool) -> some View {
     if shouldHide { self.hidden() } else { self }
   }
+  
+  func onTap(_ action: @escaping () -> Void) -> some View {
+    self
+      .contentShape(Rectangle()) // Expand hit area to full view bounds
+      .onTapGesture(perform: action)
+  }
 }
