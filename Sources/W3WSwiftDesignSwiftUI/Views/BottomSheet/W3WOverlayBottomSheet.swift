@@ -25,7 +25,11 @@ public struct W3WOverlayBottomSheet<Content: View>: View {
     ZStack(alignment: .bottom) {
       data.overlayColor
         .edgesIgnoringSafeArea(.all)
-        .onTapGesture(perform: onDismiss)
+        .onTap {
+          if data.dismissOnTapOutside {
+            onDismiss()
+          }
+        }
       VStack(spacing: 0) {
         if data.showDragIndicator {
           Rectangle()
@@ -48,12 +52,17 @@ public struct W3WOverlayBottomSheet<Content: View>: View {
   }
 }
 
+@available(iOS 17.0, *)
 #Preview {
+  @Previewable @State var isPresented = false
+  
   Color.blue
     .edgesIgnoringSafeArea(.all)
-    .overlay(W3WOverlayBottomSheet(content: {
-        Text("Hello")
-      }, onDismiss: {
-        print("Did dismiss!")
-      }))
+    .onTapGesture {
+      isPresented.toggle()
+    }
+    .overlayBottomSheet(isPresented: $isPresented) {
+      Text("Hello")
+    }
+    .overlayBottomSheetDismissOnTapOutside(false)
 }

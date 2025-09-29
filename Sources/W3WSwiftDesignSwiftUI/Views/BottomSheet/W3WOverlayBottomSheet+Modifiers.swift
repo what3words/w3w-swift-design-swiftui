@@ -90,6 +90,16 @@ extension View {
 }
 
 extension View {
+  /// Sets whether tapping outside the sheet dismisses it.
+  ///
+  /// - Returns: A view with the modifier applied.
+  /// - SeeAlso: `W3WOverlayBottomSheetData.showDragIndicator`
+  func overlayBottomSheetDismissOnTapOutside(_ flag: Bool) -> some View {
+    modifyEnvironment(\.overlayBottomSheetData) { data in
+      data.dismissOnTapOutside = flag
+    }
+  }
+  
   /// Hides the drag indicator (the small handle) at the top of the Bottom Sheet.
   ///
   /// - Returns: A view with the modifier applied.

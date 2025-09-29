@@ -24,9 +24,18 @@ extension EnvironmentValues {
 /// - `overlayColor`: The background overlay color behind the sheet (typically a dimmed color).
 /// - `showDragIndicator`: Whether to show a small drag handle at the top of the sheet.
 /// - `cornerRadius`: Corner radius for the top corners of the sheet.
+/// - `dismissOnTapOutside`: Whether tapping outside the sheet dismisses it.
 ///
 /// Read inside `W3WOverlayBottomSheet` via `@Environment(\.overlayBottomSheetData)`.
 struct W3WOverlayBottomSheetData {
+  /// Whether tapping on the overlay background (outside the sheet) should dismiss it.
+  ///
+  /// - `true`: The sheet will automatically dismiss when tapping outside.
+  /// - `false`: The tap is ignored, and the sheet stays visible.
+  ///
+  /// Defaults to `true`.
+  var dismissOnTapOutside = true
+  
   /// The full-screen overlay color behind the sheet.
   ///
   /// Used to dim or obscure the underlying content. Commonly set to `Color.black.opacity(x)`.
@@ -40,3 +49,4 @@ struct W3WOverlayBottomSheetData {
   /// Corner radius applied to the sheet's top-left and top-right corners.
   var cornerRadius: CGFloat = W3WCornerRadius.regular.value
 }
+
