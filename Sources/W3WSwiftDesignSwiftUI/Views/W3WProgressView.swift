@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import W3WSwiftThemes
 
 public struct W3WProgressView: View {
   public init() {}
   
   public var body: some View {
-    if #available(iOS 14.0, *) {
+    if #available(iOS 15.0, *) {
       ProgressView()
         .progressViewStyle(.circular)
         .scaleEffect(1.5)
+        .tint(W3WCoreColor.hig.grey52.suColor)
     } else {
       ActivityIndicator()
     }

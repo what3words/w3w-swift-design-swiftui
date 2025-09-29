@@ -7,58 +7,53 @@
 
 import SwiftUI
 import W3WSwiftThemes
-import UIKit
 
 public struct W3WOverlayBottomSheet<Content: View>: View {
-  public var overlayColor: Color
-  @ViewBuilder public let content: Content
+  @Environment(\.overlayBottomSheetData) private var data
+  @ViewBuilder private let content: () -> Content
+  private let onDismiss: () -> Void
   
-  var onDismiss: (() -> Void)?
-  public init(overlayColor: Color = W3WColor.overlayNormal.suColor,
-              @ViewBuilder content: () -> Content,
-              onDismiss: (() -> Void)?) {
-    self.overlayColor = overlayColor
-    self.content = content()
+  public init(
+    @ViewBuilder content: @escaping () -> Content,
+    onDismiss: @escaping () -> Void = {}
+  ) {
+    self.content = content
     self.onDismiss = onDismiss
   }
   
   public var body: some View {
-    GeometryReader { geometry in
-      ZStack {
-        overlayColor.edgesIgnoringSafeArea(.all)
-          .onTap {
-            onDismiss?()
-          }
-        VStack {
-          Spacer() // push everything to bottom
-          VStack(spacing: 0) {
-            Spacer()
-              .frame(height: 10.0)
-            Rectangle()
-              .fill(W3WCoreColor(hex: 0x7F7F7F).suColor.opacity(0.4))
-              .cornerRadius(4.0)
-              .frame(width: 36.0, height: 5.0)
-            content
-              .edgesIgnoringSafeArea(.bottom)
-          }
-          .background(backgroundColor)
-          .cornerRadius(W3WCornerRadius.regular.value, corners: [.topLeft, .topRight])
+    ZStack(alignment: .bottom) {
+      data.overlayColor
+        .edgesIgnoringSafeArea(.all)
+        .onTapGesture(perform: onDismiss)
+      VStack(spacing: 0) {
+        if data.showDragIndicator {
+          Rectangle()
+            .fill(W3WCoreColor(hex: 0x7F7F7F).suColor.opacity(0.4))
+            .cornerRadius(4.0)
+            .frame(width: 36.0, height: 5.0)
         }
-        .background(
-          background // Hackaround to force a background at the bottom area
-            .frame(height: geometry.safeAreaInsets.bottom)
-            .frame(maxHeight: .infinity, alignment: .bottom)
-        )
+        content()
+          .frame(maxWidth: .infinity)
       }
+      .padding(.top, W3WPadding.extraMedium.value)
+      .background(background)
     }
   }
   
-  // hackaround background
   private var background: some View {
-    return backgroundColor.edgesIgnoringSafeArea(.bottom)
-  }
-  
-  private var backgroundColor: Color {
     W3WColor.w3wSystemBackgroundElevatedPrimary.suColor
+      .cornerRadius(data.cornerRadius, corners: [.topLeft, .topRight])
+      .edgesIgnoringSafeArea(.bottom)
   }
+}
+
+#Preview {
+  Color.blue
+    .edgesIgnoringSafeArea(.all)
+    .overlay(W3WOverlayBottomSheet(content: {
+        Text("Hello")
+      }, onDismiss: {
+        print("Did dismiss!")
+      }))
 }
