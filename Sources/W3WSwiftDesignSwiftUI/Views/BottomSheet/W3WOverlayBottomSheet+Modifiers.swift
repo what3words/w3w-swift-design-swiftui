@@ -58,7 +58,7 @@ import W3WSwiftThemes
 ///   }
 /// }
 /// ```
-extension View {
+public extension View {
   /// Presents an overlay Bottom Sheet controlled by a Boolean binding.
   ///
   /// - Parameters:
@@ -89,7 +89,7 @@ extension View {
   }
 }
 
-extension View {
+public extension View {
   /// Sets whether tapping outside the sheet dismisses it.
   ///
   /// - Returns: A view with the modifier applied.
