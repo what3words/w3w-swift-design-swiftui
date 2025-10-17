@@ -36,11 +36,11 @@ public struct W3WOverlayBottomSheet<Content: View>: View {
             .fill(W3WCoreColor(hex: 0x7F7F7F).suColor.opacity(0.4))
             .cornerRadius(4.0)
             .frame(width: 36.0, height: 5.0)
+            .padding(.top, W3WPadding.extraMedium.value)
         }
         content()
           .frame(maxWidth: .infinity)
       }
-      .padding(.top, W3WPadding.extraMedium.value)
       .background(background)
     }
   }
@@ -65,4 +65,14 @@ public struct W3WOverlayBottomSheet<Content: View>: View {
       Text("Hello")
     }
     .overlayBottomSheetDismissOnTapOutside(false)
+}
+
+#Preview {
+  Color.blue
+    .edgesIgnoringSafeArea(.all)
+    .overlayBottomSheet(isPresented: .constant(true)) {
+      Text("Hello")
+        .background(Color.blue)
+    }
+    .hideOverlayBottomSheetDragIndicator()
 }
