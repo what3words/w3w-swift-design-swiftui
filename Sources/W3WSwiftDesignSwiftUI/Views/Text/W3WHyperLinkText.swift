@@ -8,7 +8,7 @@
 import SwiftUI
 import W3WSwiftThemes
 
-/// this component is to display a text with a hyperlink in it
+/// This component displays a text with a clickable hyperlink inside it.
 public struct HyperlinkText: View {
   let text: String
   let color: W3WColor?
@@ -27,8 +27,8 @@ public struct HyperlinkText: View {
     hyperlinkColor: W3WColor?,
     hyperlinkFont: W3WFont?,
     url: URL?,
-    onOpenURL: ((URL?) -> Void)?)
-  {
+    onOpenURL: ((URL?) -> Void)?
+  ) {
     self.text = text
     self.color = color
     self.font = font
@@ -40,45 +40,41 @@ public struct HyperlinkText: View {
   }
   
   public var body: some View {
-    return generate()
-  }
-  
-  func generate() -> some View {
     if #available(iOS 15, *) {
       let attributed = NSMutableAttributedString(string: text)
+      let fullRange = NSRange(location: 0, length: attributed.length)
       
-      // Find all occurrences of the hyperlink text and make them clickable + underlined
-      let pattern = NSRegularExpression.escapedPattern(for: hyperlinkText)
-      if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
-        let range = NSRange(location: 0, length: (text as NSString).length)
-        regex.enumerateMatches(in: text, options: [], range: range) { match, _, _ in
-          guard let matchRange = match?.range else { return }
-          attributed.addAttributes([
-            .link: url as Any,
-            // has underline
-            .underlineStyle: NSUnderlineStyle.single.rawValue,
-            .foregroundColor: hyperlinkColor?.uiColor as Any,
-            .font: hyperlinkFont?.uiFont as Any
-          ], range: matchRange)
-        }
+      // Apply font/color to the whole text first
+      var baseAttributes: [NSAttributedString.Key: Any] = [:]
+      if let uiFont = font?.uiFont {
+        baseAttributes[.font] = uiFont
       }
+      if let uiColor = color?.uiColor {
+        baseAttributes[.foregroundColor] = uiColor
+      }
+      attributed.addAttributes(baseAttributes, range: fullRange)
       
-      // Apply default font/color to the rest of the text
-      attributed.addAttributes([
-        .font: UIFont.preferredFont(forTextStyle: .body),
-      ], range: NSRange(location: 0, length: attributed.length))
+      // Apply hyperlink style to the matched text
+      let nsRange = (text as NSString).range(of: hyperlinkText, options: [])
+      if let _ = Range(nsRange, in: text) {
+        attributed.addAttributes([
+          .link: url as Any,
+          .underlineStyle: NSUnderlineStyle.single.rawValue,
+          .foregroundColor: hyperlinkColor?.uiColor as Any,
+          .font: hyperlinkFont?.uiFont as Any
+        ], range: nsRange)
+      }
       
       // Convert NSAttributedString → AttributedString → SwiftUI Text
       let attrSwiftUI = try! AttributedString(attributed, including: \.uiKit)
       
       return Text(attrSwiftUI)
-        .font(font?.suFont)
-        .foregroundColor(color?.suColor)
         .environment(\.openURL, OpenURLAction { url in
           onOpenURL?(url)
           return .handled
         })
     } else {
+      // Fallback for iOS < 15
       return Text(text)
         .foregroundColor(color?.suColor)
         .font(font?.suFont)
