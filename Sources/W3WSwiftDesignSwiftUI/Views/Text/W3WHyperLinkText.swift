@@ -57,12 +57,18 @@ public struct HyperlinkText: View {
       // Apply hyperlink style to the matched text
       let nsRange = (text as NSString).range(of: hyperlinkText, options: [])
       if let _ = Range(nsRange, in: text) {
-        attributed.addAttributes([
-          .link: url as Any,
-          .underlineStyle: NSUnderlineStyle.single.rawValue,
-          .foregroundColor: hyperlinkColor?.uiColor as Any,
-          .font: hyperlinkFont?.uiFont as Any
-        ], range: nsRange)
+        var matchAttributes: [NSAttributedString.Key: Any] = [:]
+        if let url {
+          matchAttributes[.link] = url
+        }
+        if let uiFont = hyperlinkFont?.uiFont {
+          matchAttributes[.font] = uiFont
+        }
+        if let uiColor = hyperlinkColor?.uiColor {
+          matchAttributes[.foregroundColor] = uiColor
+        }
+        matchAttributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+        attributed.addAttributes(matchAttributes, range: nsRange)
       }
       
       // Convert NSAttributedString → AttributedString → SwiftUI Text
