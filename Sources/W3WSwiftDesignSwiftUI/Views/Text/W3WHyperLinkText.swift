@@ -88,3 +88,14 @@ public struct HyperlinkText: View {
     }
   }
 }
+
+#Preview {
+  HyperlinkText(text: "Test hyperlink",
+                color: nil,
+                font: nil,
+                hyperlinkText: "hyperlink",
+                hyperlinkColor: nil,
+                hyperlinkFont: nil,
+                url: URL(string: "https://www.google.com/")!,
+                onOpenURL: nil)
+}
