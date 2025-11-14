@@ -8,6 +8,11 @@
 import SwiftUI
 import W3WSwiftThemes
 
+/// Defines standard system sizes for UI elements such as buttons or backgrounds.
+/// - none: No padding or special height.
+/// - small: Small horizontal padding and height.
+/// - medium: Medium horizontal padding and height.
+/// - large: Large horizontal padding and height, with rounded corners.
 enum W3WSize {
   case none
   case small
@@ -16,10 +21,18 @@ enum W3WSize {
 }
 
 extension View {
+  /// Applies a themed background color using a keyPath, with optional system sizing and corner style.
+  /// - Parameters:
+  ///   - keyPath: KeyPath to a color property in `W3WTheme`.
+  ///   - size: System size style (default is `.none`).
+  /// - Returns: A view with the background and shape applied.
   func w3wBackground(_ keyPath: KeyPath<W3WTheme, W3WColor?>, size: W3WSize = .none) -> some View {
     modifier(W3WBackgroundModifier(keyPath: keyPath, size: size))
   }
   
+  /// Applies an arbitrary background color (if any), using `.suColor` if available.
+  /// - Parameter color: The background color, or nil.
+  /// - Returns: The view with the background applied.
   @ViewBuilder
   func background(_ color: W3WColor?) -> some View {
     if #available(iOS 15.0, *), let color = color?.suColor {
@@ -31,6 +44,8 @@ extension View {
 }
 
 // MARK: - Helpers
+
+/// ViewModifier that applies background color, horizontal padding, height, and shape based on theme and size.
 private struct W3WBackgroundModifier: ViewModifier {
   @Environment(\.theme) private var theme
   let keyPath: KeyPath<W3WTheme, W3WColor?>
@@ -46,6 +61,7 @@ private struct W3WBackgroundModifier: ViewModifier {
 }
 
 private extension W3WSize {
+  /// Horizontal padding for each size.
   var horizontalPadding: CGFloat? {
     switch self {
     case .none: return 0
@@ -55,6 +71,7 @@ private extension W3WSize {
     }
   }
   
+  /// Height for each size, or nil for `.none` (no constraint).
   var height: CGFloat? {
     switch self {
     case .none: return nil
@@ -66,6 +83,9 @@ private extension W3WSize {
 }
 
 private extension View {
+  /// Applies a shape to the view according to the system size style.
+  /// - Parameter size: The system size (W3WSize).
+  /// - Returns: The view with the appropriate shape (capsule, or rounded rect).
   @ViewBuilder
   func clipShape(_ size: W3WSize) -> some View {
     switch size {
@@ -77,7 +97,9 @@ private extension View {
   }
 }
 
-// MARK: - Example
+// MARK: - Previews
+
+/// Example usage of `w3wBackground` with different size options.
 private struct ExampleView: View {
   var body: some View {
     HStack {
@@ -95,3 +117,4 @@ private struct ExampleView: View {
 #Preview {
   ExampleView()
 }
+

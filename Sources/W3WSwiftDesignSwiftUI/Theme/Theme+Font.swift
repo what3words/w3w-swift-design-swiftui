@@ -9,17 +9,30 @@ import SwiftUI
 import W3WSwiftThemes
 
 extension W3WSwiftUITheme {
+  /// Retrieves a font from the theme according to style, weight, and italic option.
+  /// - Parameters:
+  ///   - style: Font style (`W3WFontStyle`).
+  ///   - weight: Font weight (default is `.regular`).
+  ///   - italic: Whether the font should be italic (default is `false`).
+  /// - Returns: The themed font, or `nil` if not available.
   func font(_ style: W3WFontStyle, weight: W3WFontWeight = .regular, italic: Bool = false) -> Font? {
     theme.typefaces?[style].with(weight: weight).with(italic: italic).suFont
   }
 }
 
 extension View {
+  /// Applies a themed font to the view.
+  /// - Parameters:
+  ///   - style: Font style (`W3WFontStyle`).
+  ///   - weight: Font weight (default is `.regular`).
+  ///   - italic: Whether the font should be italic (default is `false`).
+  /// - Returns: The view with the font applied.
   func w3wFont(_ style: W3WFontStyle, weight: W3WFontWeight = .regular, italic: Bool = false) -> some View {
     modifier(W3WFontModifier(style: style, weight: weight, italic: italic))
   }
 }
 
+/// A ViewModifier that applies a themed font to its content.
 private struct W3WFontModifier: ViewModifier {
   @Environment(\.theme) private var theme
   let style: W3WFontStyle
@@ -32,6 +45,8 @@ private struct W3WFontModifier: ViewModifier {
 }
 
 // MARK: - Previews
+
+/// Example of using the theme's font directly via the font method.
 private struct ExampleView: View {
   @Environment(\.theme) private var theme
   
@@ -41,6 +56,7 @@ private struct ExampleView: View {
   }
 }
 
+/// Example of using the w3wFont modifier for a view.
 private struct ExampleView2: View {
   var body: some View {
     Text("Hello w3w!")

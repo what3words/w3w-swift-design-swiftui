@@ -9,10 +9,21 @@ import SwiftUI
 import W3WSwiftThemes
 
 extension View {
+  /// Applies a standardized button style based on the theme color and system size.
+  /// - Parameters:
+  ///   - keyPath: KeyPath to a color property in `W3WTheme` to use as the button background.
+  ///   - size: The system size (for background, height, and padding).
+  /// - Returns: A view with the button style applied.
   func w3wButtonStyle(_ keyPath: KeyPath<W3WTheme, W3WColor?>, size: W3WSize) -> some View {
     buttonStyle(W3WButtonStyle(keyPath: keyPath, size: size))
   }
-    
+  
+  /// Applies a button style with a custom shape and supports further customization of the button label view.
+  /// - Parameters:
+  ///   - keyPath: KeyPath to a color property in `W3WTheme` for the background.
+  ///   - shape: The custom shape to use for the button background.
+  ///   - modify: Closure allowing customization of the button label view
+  /// - Returns: A view with the custom button style applied.
   func w3wButtonStyle<S: Shape, Content: View>(
     _ keyPath: KeyPath<W3WTheme, W3WColor?>,
     shape: S,
@@ -20,7 +31,12 @@ extension View {
   ) -> some View {
     buttonStyle(W3WCustomShapeAndSizeButtonStyle(keyPath: keyPath, shape: shape, modify: modify))
   }
-  
+
+  /// Applies a button style with a default rectangular shape (no corner radius) and allows label view customization.
+  /// - Parameters:
+  ///   - keyPath: KeyPath to a color property in `W3WTheme` for the background.
+  ///   - modify: Closure allowing customization of the button label view.
+  /// - Returns: A view with the custom button style applied.
   func w3wButtonStyle<Content: View>(
     _ keyPath: KeyPath<W3WTheme, W3WColor?>,
     modify: @escaping (ButtonStyleConfiguration.Label) -> Content
@@ -29,6 +45,7 @@ extension View {
   }
 }
 
+/// ButtonStyle that applies a themed background, padding, and shape based on the system size.
 private struct W3WButtonStyle: ButtonStyle {
   @Environment(\.theme) private var theme
   let keyPath: KeyPath<W3WTheme, W3WColor?>
@@ -42,6 +59,7 @@ private struct W3WButtonStyle: ButtonStyle {
   }
 }
 
+/// ButtonStyle that applies a themed background and a custom shape.
 private struct W3WCustomShapeButtonStyle<S: Shape>: ButtonStyle {
   @Environment(\.theme) private var theme
   let keyPath: KeyPath<W3WTheme, W3WColor?>
@@ -56,6 +74,8 @@ private struct W3WCustomShapeButtonStyle<S: Shape>: ButtonStyle {
   }
 }
 
+/// ButtonStyle that applies a themed background, a custom shape, and custom label content.
+/// The button label can be further modified (for padding, etc.) via the `modify` closure.
 private struct W3WCustomShapeAndSizeButtonStyle<S: Shape, Content: View>: ButtonStyle {
   @Environment(\.theme) private var theme
   let keyPath: KeyPath<W3WTheme, W3WColor?>
@@ -71,6 +91,7 @@ private struct W3WCustomShapeAndSizeButtonStyle<S: Shape, Content: View>: Button
 }
 
 // MARK: - Previews
+
 @available(iOS 14.0, *)
 #Preview {
   HStack {
