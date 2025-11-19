@@ -13,23 +13,25 @@ import W3WSwiftThemes
 /// - small: Small horizontal padding and height.
 /// - medium: Medium horizontal padding and height.
 /// - large: Large horizontal padding and height, with rounded corners.
-enum W3WSize {
+public enum W3WSize {
   case none
   case small
   case medium
   case large
 }
 
-extension View {
+public extension View {
   /// Applies a themed background color using a keyPath, with optional system sizing and corner style.
   /// - Parameters:
   ///   - keyPath: KeyPath to a color property in `W3WTheme`.
   ///   - size: System size style (default is `.none`).
   /// - Returns: A view with the background and shape applied.
-  func w3wBackground(_ keyPath: KeyPath<W3WTheme, W3WColor?>, size: W3WSize = .none) -> some View {
-    modifier(W3WBackgroundModifier(keyPath: keyPath, size: size))
+  func w3w(background: KeyPath<W3WTheme, W3WColor?>, size: W3WSize = .none) -> some View {
+    modifier(W3WBackgroundModifier(keyPath: background, size: size))
   }
-  
+}
+
+extension View {
   /// Applies an arbitrary background color (if any), using `.suColor` if available.
   /// - Parameter color: The background color, or nil.
   /// - Returns: The view with the background applied.
@@ -105,12 +107,12 @@ private struct ExampleView: View {
     HStack {
       Text("Button")
         .frame(width: 100, height: 40)
-        .w3wBackground(\.fillsQuaternary)
+        .w3w(background: \.fillsQuaternary)
       Text("Button")
-        .w3wBackground(\.fillsQuaternary, size: .medium)
+        .w3w(background: \.fillsQuaternary, size: .medium)
     }
-    .w3wForeground(\.labelsSecondary)
-    .w3wFont(.subheadline)
+    .w3w(foreground: \.labelsSecondary)
+    .w3w(font: .subheadline)
   }
 }
 

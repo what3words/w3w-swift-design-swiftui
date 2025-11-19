@@ -8,7 +8,7 @@
 import SwiftUI
 import W3WSwiftThemes
 
-extension View {
+public extension View {
   /// Applies a standardized button style based on the theme color and system size.
   /// - Parameters:
   ///   - keyPath: KeyPath to a color property in `W3WTheme` to use as the button background.
@@ -54,7 +54,7 @@ private struct W3WButtonStyle: ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration
       .label
-      .w3wBackground(keyPath, size: size)
+      .w3w(background: keyPath, size: size)
       .opacity(configuration.isPressed ? 0.25 : 1)
   }
 }
@@ -99,8 +99,8 @@ private struct W3WCustomShapeAndSizeButtonStyle<S: Shape, Content: View>: Button
     Button("Share", action: {})
   }
   .w3wButtonStyle(\.fillsQuaternary, size: .medium)
-  .w3wForeground(\.labelsSecondary)
-  .w3wFont(.subheadline)
+  .w3w(foreground: \.labelsSecondary)
+  .w3w(font: .subheadline)
 }
 
 @available(iOS 14.0, *)
@@ -112,6 +112,6 @@ private struct W3WCustomShapeAndSizeButtonStyle<S: Shape, Content: View>: Button
   .w3wButtonStyle(\.fillsQuaternary, shape: .rect(cornerRadius: 5)) { label in
     label.padding(8)
   }
-  .w3wForeground(\.labelsSecondary)
-  .w3wFont(.subheadline)
+  .w3w(foreground: \.labelsSecondary)
+  .w3w(font: .subheadline)
 }

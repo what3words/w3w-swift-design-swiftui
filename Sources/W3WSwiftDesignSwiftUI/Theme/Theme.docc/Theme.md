@@ -199,7 +199,7 @@ private var background: some View {
   switch colorMode {
   case .light:
     ZStack {
-      W3WCoreColor(hex: 0x8496A1).suColor.opacity(0.8)
+      W3WCoreColor(hex: 0x8496A1xx).suColor.opacity(0.8)
       W3WCoreColor(hex: 0x545454).suColor.blendMode(.colorDodge)
     }
 

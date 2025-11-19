@@ -10,13 +10,13 @@ import W3WSwiftThemes
 
 /// Extends the SwiftUI environment values with a theme property for global access.
 /// The default is `.what3words` theme.
-extension EnvironmentValues {
+public extension EnvironmentValues {
   /// The active UI theme, available throughout the SwiftUI environment.
   @Entry var theme = W3WSwiftUITheme(theme: .what3words)
 }
 
 /// Extends the environment to track the active color mode (e.g., theme, light, dark).
-extension EnvironmentValues {
+public extension EnvironmentValues {
   /// The color mode, controls how colors are resolved in the UI.
   @Entry var colorMode: W3WColorMode = W3WColor.theme
 }
@@ -24,13 +24,13 @@ extension EnvironmentValues {
 /// A wrapper that provides dynamic member access for `W3WTheme`,
 /// allowing convenient theme property lookups in SwiftUI views.
 @dynamicMemberLookup
-struct W3WSwiftUITheme {
+public struct W3WSwiftUITheme {
   let theme: W3WTheme
 }
 
 // MARK: - Modify theme
 
-extension View {
+public extension View {
   /// Modifies the current environment theme for the view and its descendants.
   ///
   /// - Parameter modify: A closure that takes an inout reference to the current theme, allowing mutation.
