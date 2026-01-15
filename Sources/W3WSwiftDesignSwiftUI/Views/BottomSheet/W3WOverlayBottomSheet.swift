@@ -10,6 +10,8 @@ import W3WSwiftThemes
 
 public struct W3WOverlayBottomSheet<Content: View>: View {
   @Environment(\.overlayBottomSheetData) private var data
+  @Environment(\.colorMode) private var colorMode
+  
   @ViewBuilder private let content: () -> Content
   private let onDismiss: () -> Void
   
