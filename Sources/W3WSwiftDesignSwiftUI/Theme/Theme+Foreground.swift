@@ -30,6 +30,7 @@ public extension View {
 /// ViewModifier that applies a themed foreground color or style to its content.
 private struct W3WForegroundColorModifier: ViewModifier {
   @Environment(\.theme) private var theme
+  @Environment(\.colorMode) private var colorMode
   let keyPath: KeyPath<W3WTheme, W3WColor?>
   
   func body(content: Content) -> some View {
