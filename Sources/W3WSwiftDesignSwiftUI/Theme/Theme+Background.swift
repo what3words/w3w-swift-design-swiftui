@@ -50,6 +50,7 @@ extension View {
 /// ViewModifier that applies background color, horizontal padding, height, and shape based on theme and size.
 private struct W3WBackgroundModifier: ViewModifier {
   @Environment(\.theme) private var theme
+  @Environment(\.colorMode) private var colorMode
   let keyPath: KeyPath<W3WTheme, W3WColor?>
   let size: W3WSize
   
