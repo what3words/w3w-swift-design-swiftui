@@ -85,13 +85,23 @@ public extension View {
     }())
   }
   
-  /// Sets the SwiftUI view's layout direction based on a `W3WLanguage`'s writing direction.
+  /// Sets the SwiftUI view's layout direction based on a `W3WRfcLanguageProtocol`'s writing direction.
   ///
   /// Use this if you want your layout to match the text direction of a specific language,
   /// regardless of the system's or UIKit's global appearance.
   ///
-  /// - Parameter language: A `W3WLanguage` instance; if nil or direction unknown, defaults to left-to-right.
+  /// - Parameter language: A `W3WRfcLanguageProtocol` instance; if nil or direction unknown, defaults to left-to-right.
   /// - Returns: A view with the applied layout direction.
+  func layoutDirection(for rfcLanguage: (any W3WRfcLanguageProtocol)?) -> some View {
+    environment(\.layoutDirection, {
+      switch rfcLanguage?.direction() {
+      case .rightToLeft: .rightToLeft
+      default: .leftToRight
+      }
+    }())
+  }
+
+  @available(*, deprecated, message: "Use layoutDirection(for:) with W3WRfcLanguageProtocol instead")
   func layoutDirection(for language: W3WLanguage?) -> some View {
     environment(\.layoutDirection, {
       switch language?.direction() {
