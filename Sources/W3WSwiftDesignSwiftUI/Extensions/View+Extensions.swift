@@ -48,7 +48,16 @@ public extension View {
   ) -> some View {
     self.modifier(CornerOverlayModifier(isVisible: isVisible, alignment: alignment,offsetX: offsetX, offsetY: offsetY, overlayView: overlayView))
   }
-  
+
+  /**
+   Grey out and disable a view to signal it is inactive (e.g. a non-interactive preview).
+   - parameters:
+        - isGreyedOut: when true the view is dimmed and made non-interactive
+   */
+  func w3wGreyedOut(_ isGreyedOut: Bool) -> some View {
+    self.modifier(W3WGreyOutModifier(isGreyedOut: isGreyedOut))
+  }
+
   /**
    Add shadow to view
    - parameters:
