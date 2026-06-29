@@ -16,6 +16,7 @@ public struct W3WMainAddressView: View {
   var shouldShowNearLocation: Bool = false
   var shouldShowSecondaryPlaceholder: Bool = false
   var shouldShowCopyButton: Bool = true
+  var shouldGreyOutCopyButton: Bool = false
   var copyAction: (() -> Void) = {}
   var longPressCopyAction: (() -> Void) = {}
   var pressAction: (() -> Void) = {}
@@ -34,6 +35,7 @@ public struct W3WMainAddressView: View {
     shouldShowNearLocation: Bool = false,
     shouldShowSecondaryPlaceholder: Bool = false,
     shouldShowCopyButton: Bool = true,
+    shouldGreyOutCopyButton: Bool = false,
     copyAction: @escaping (() -> Void) = {},
     longPressCopyAction: @escaping (() -> Void) = {},
     pressAction: @escaping (() -> Void) = {}
@@ -45,6 +47,7 @@ public struct W3WMainAddressView: View {
     self.shouldShowNearLocation = shouldShowNearLocation
     self.shouldShowSecondaryPlaceholder = shouldShowSecondaryPlaceholder
     self.shouldShowCopyButton = shouldShowCopyButton
+    self.shouldGreyOutCopyButton = shouldGreyOutCopyButton
     self.copyAction = copyAction
     self.longPressCopyAction = longPressCopyAction
     self.accessibilityLabel = accessibilityLabel
@@ -181,6 +184,7 @@ private extension W3WMainAddressView {
       )
       .padding(W3WPadding.light.value)
     }
+    .w3wGreyedOut(shouldGreyOutCopyButton)
   }
   
   var addressPlaceHolder: some View {
