@@ -2,11 +2,9 @@
 //  W3WAlertView.swift
 //  w3w-swift-design-swiftui
 //
-//  A centered, alert-style dialog: title + message + an optional spinner + a single button.
-//  Unlike SwiftUI's `.alert` / UIKit's `UIAlertController`, this can show custom content (the
-//  spinner), which is why it's a bespoke component. Includes its own dimmed full-screen overlay,
-//  so host it over your content (e.g. in a `UIHostingController` added to the window).
+//  Created by Kaley Nguyen on 9/7/26.
 //
+
 
 import SwiftUI
 import W3WSwiftThemes
