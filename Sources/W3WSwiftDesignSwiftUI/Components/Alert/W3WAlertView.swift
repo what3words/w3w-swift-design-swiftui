@@ -46,13 +46,10 @@ public struct W3WAlertView: View {
 
   public var body: some View {
     GeometryReader { geo in
-      ZStack {
-        W3WColor.w3wBrandBaseSecondary.suColor.opacity(scrimOpacity).edgesIgnoringSafeArea(.all)
-
-        card
-          .frame(width: min(geo.size.width * cardWidthFraction, maxCardWidth))
-      }
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      card
+        .frame(width: min(geo.size.width * cardWidthFraction, maxCardWidth))
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(W3WColor.w3wBrandBaseSecondary.suColor.opacity(scrimOpacity).edgesIgnoringSafeArea(.all))
     }
     .edgesIgnoringSafeArea(.all)
   }
@@ -62,18 +59,16 @@ public struct W3WAlertView: View {
         VStack(spacing: W3WPadding.medium.value) {
           Text(title)
             .w3w(font: .headline)
-            .w3w(foreground: \.labelsPrimaryBlackInverse)
-            .multilineTextAlignment(.center)
 
           Text(message)
             .w3w(font: .footnote)
-            .w3w(foreground: \.labelsPrimaryBlackInverse)
-            .multilineTextAlignment(.center)
 
           if showsSpinner {
             W3WProgressView()
           }
         }
+        .w3w(foreground: \.labelsPrimaryBlackInverse)
+        .multilineTextAlignment(.center)
         .padding(.vertical, contentVerticalPadding)
         .padding(.horizontal, W3WPadding.bold.value)
 
