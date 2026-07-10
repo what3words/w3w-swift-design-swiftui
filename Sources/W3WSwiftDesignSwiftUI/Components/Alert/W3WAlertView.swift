@@ -58,7 +58,7 @@ public struct W3WAlertView: View {
     VStack(spacing: 0) {
         VStack(spacing: W3WPadding.medium.value) {
           Text(title)
-            .w3w(font: .headline)
+            .w3w(font: .headline, weight: .bold)
 
           Text(message)
             .w3w(font: .footnote)
