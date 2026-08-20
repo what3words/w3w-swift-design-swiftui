@@ -89,3 +89,46 @@ public struct W3WHostingView<Content: View>: View {
     return colorScheme == .dark ? .dark : .light
   }
 }
+
+@available(iOS 17.0, *)
+#Preview {
+  struct Content: View {
+    @Environment(\.colorMode) private var colorMode
+    
+    var body: some View {
+      W3WText("Hi")
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .background()
+        .preferredColorScheme(colorMode == .dark ? .dark : .light)
+    }
+  }
+  
+  struct MockTranslation: W3WTranslationsProtocol {
+    let value: String
+    func get(id: String, language: W3WLanguage?) -> String { value }
+    func get(id: String) -> String { value }
+  }
+  
+  @Previewable @State var colorMode = W3WLive<W3WColorMode?>(nil)
+  @Previewable @State var layoutDirection = W3WLive<LayoutDirection?>(nil)
+  @Previewable @State var translations = W3WLive<W3WTranslationsProtocol?>(nil)
+  
+  let content = Content()
+    .task {
+      while !Task.isCancelled {
+        try? await Task.sleep(for: .seconds(1))
+        colorMode.send(Bool.random() ? .dark : .light)
+        layoutDirection.send(Bool.random() ? .rightToLeft : .leftToRight)
+        let text = String(Int.random(in: 1000...10000))
+        translations.send(MockTranslation(value: text))
+      }
+    }
+  
+  return W3WHostingController(
+    rootView: content,
+    colorMode: colorMode,
+    layoutDirection: layoutDirection,
+    translations: translations
+  )
+}
