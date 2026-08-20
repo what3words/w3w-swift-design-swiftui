@@ -1,0 +1,91 @@
+//
+//  W3WHostingController.swift
+//  w3w-swift-design-swiftui
+//
+//  Created by Hoang Ta on 19/8/26.
+//
+
+import SwiftUI
+import Combine
+import W3WSwiftCore
+import W3WSwiftThemes
+
+/// A `UIHostingController` that injects the app-wide SwiftUI environment
+/// (`colorMode`, `layoutDirection`, `translations`) into its root view,
+/// keeping them in sync with the given publishers.
+public final class W3WHostingController<T: View>: UIHostingController<W3WHostingView<T>> {
+  /// Holds the latest environment values, shared with the root `HostingView`.
+  private let viewModel = W3WHostingViewModel()
+
+  /// Creates a hosting controller whose SwiftUI environment follows the given publishers.
+  ///
+  /// All publishers must emit on the main thread. Values are applied synchronously, so a
+  /// publisher that replays its current value on subscription (e.g. `CurrentValueSubject`)
+  /// is reflected in the very first rendered frame.
+  /// - Parameters:
+  ///   - rootView: The SwiftUI view to host.
+  ///   - colorMode: Emits the color mode to apply, or `nil` to follow the system appearance.
+  ///   - layoutDirection: Emits the layout direction to apply, or `nil` to follow the system.
+  ///   - translations: Emits the translations provider, or `nil` to keep the environment default.
+  public init(
+    rootView: T,
+    colorMode: some Publisher<W3WColorMode?, Never>,
+    layoutDirection: some Publisher<LayoutDirection?, Never>,
+    translations: some Publisher<W3WTranslationsProtocol?, Never>
+  ) {
+    super.init(rootView: W3WHostingView(viewModel: self.viewModel, content: rootView))
+    colorMode.assign(to: &viewModel.$colorMode)
+    layoutDirection.assign(to: &viewModel.$layoutDirection)
+    translations.assign(to: &viewModel.$translations)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+}
+
+/// Bridges the controller's publishers into observable state for `HostingView`.
+private final class W3WHostingViewModel: ObservableObject {
+  /// Explicit color mode, or `nil` to follow the system appearance.
+  @Published var colorMode: W3WColorMode?
+
+  /// Explicit layout direction, or `nil` to follow the system.
+  @Published var layoutDirection: LayoutDirection?
+
+  /// Explicit translations provider, or `nil` to keep the environment default.
+  @Published var translations: W3WTranslationsProtocol?
+}
+
+/// Wraps the hosted content and applies the app-wide environment values to it.
+public struct W3WHostingView<Content: View>: View {
+  /// The system appearance, used when no explicit color mode is set.
+  @Environment(\.colorScheme) private var colorScheme
+  
+  /// The translations provider inherited from the environment, used when none is published.
+  @Environment(\.translations) private var defaultTranslations
+  
+  /// The layout direction inherited from the system, used when no app language is chosen.
+  @Environment(\.layoutDirection) private var systemLayoutDirection
+  
+  // Workaround to trigger UI updates when dynamicTypeSize changes
+  @Environment(\.dynamicTypeSize) private var size
+
+  /// State shared with the owning `W3WHostingController`, which feeds it from publishers.
+  @ObservedObject fileprivate var viewModel: W3WHostingViewModel
+  
+  /// The hosted SwiftUI view.
+  let content: Content
+
+  public var body: some View {
+    content
+      .environment(\.colorMode, colorMode)
+      .environment(\.layoutDirection, viewModel.layoutDirection ?? systemLayoutDirection)
+      .environment(\.translations, viewModel.translations ?? defaultTranslations)
+  }
+
+  /// The explicit color mode if set, otherwise derived from the system appearance.
+  private var colorMode: W3WColorMode {
+    if let colorMode = viewModel.colorMode { return colorMode }
+    return colorScheme == .dark ? .dark : .light
+  }
+}
