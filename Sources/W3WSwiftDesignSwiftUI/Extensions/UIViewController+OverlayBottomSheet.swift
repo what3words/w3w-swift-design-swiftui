@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UIKit
+import W3WSwiftThemes
 
 public extension UIViewController {
 
@@ -26,6 +27,7 @@ public extension UIViewController {
     }
     .overlayBottomSheetDismissOnTapOutside(dismissOnTapOutside)
     .overlayBottomSheetCornerRadius(cornerRadius)
+    .overlayBottomSheetColor(W3WCoreColor.darkBlue.with(alpha: 0.4).suColor)   // Figma scrim: navy @ 40%
 
     let host: UIHostingController<AnyView>
     if showsDragIndicator {

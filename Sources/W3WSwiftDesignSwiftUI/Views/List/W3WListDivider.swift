@@ -12,9 +12,11 @@ import W3WSwiftThemes
 /// Hairline separator between list rows; full width by default, inset when the caller asks.
 public struct W3WListDivider: View {
   private let leadingInset: CGFloat
+  private let background: KeyPath<W3WTheme, W3WColor?>
 
-  public init(leadingInset: CGFloat = 0) {
+  public init(leadingInset: CGFloat = 0, background: KeyPath<W3WTheme, W3WColor?> = \.systemBackgroundElevatedPrimary) {
     self.leadingInset = leadingInset
+    self.background = background
   }
 
   public var body: some View {
@@ -22,7 +24,7 @@ public struct W3WListDivider: View {
       .frame(height: 0.5)
       .w3w(background: \.separatorNonOpaque)
       .padding(.leading, leadingInset)
-      .w3w(background: \.systemBackgroundElevatedPrimary)
+      .w3w(background: background)
   }
 }
 

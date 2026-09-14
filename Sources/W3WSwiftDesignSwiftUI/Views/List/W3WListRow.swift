@@ -10,14 +10,19 @@ import SwiftUI
 import W3WSwiftThemes
 
 /// Tappable row shell for list screens: full width, 16pt insets, 56pt minimum height,
-/// elevated primary background. The row's own content goes in the builder.
+/// elevated primary background unless the caller passes another token. The row's own content goes in the builder.
 public struct W3WListRow<Content: View>: View {
   private let minHeight: CGFloat
+  private let background: KeyPath<W3WTheme, W3WColor?>
   private let action: () -> Void
   private let content: Content
 
-  public init(minHeight: CGFloat = 56, action: @escaping () -> Void, @ViewBuilder content: () -> Content) {
+  public init(minHeight: CGFloat = 56,
+              background: KeyPath<W3WTheme, W3WColor?> = \.systemBackgroundElevatedPrimary,
+              action: @escaping () -> Void,
+              @ViewBuilder content: () -> Content) {
     self.minHeight = minHeight
+    self.background = background
     self.action = action
     self.content = content()
   }
@@ -27,7 +32,7 @@ public struct W3WListRow<Content: View>: View {
       content
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, minHeight: minHeight, alignment: .leading)
-        .w3w(background: \.systemBackgroundElevatedPrimary)
+        .w3w(background: background)
     }
     .buttonStyle(.plain)
   }

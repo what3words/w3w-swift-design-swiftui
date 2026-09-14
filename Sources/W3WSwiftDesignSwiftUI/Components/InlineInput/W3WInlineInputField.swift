@@ -59,7 +59,7 @@ public struct W3WInlineInputField: View {
       HStack(spacing: 8) {
         TextField(placeholder, text: $text)
           .w3w(font: .body)
-          .w3w(foreground: \.labelsPrimary)
+          .w3w(foreground: \.labelsPrimaryBlackInverse)   // labelsPrimary is white in both modes of the w3w theme
           .focused($focused)
           .submitLabel(.go)
           .onSubmit { if canCommit { onCommit() } }
