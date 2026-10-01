@@ -59,6 +59,13 @@ public extension View {
       height.wrappedValue = size.height
     }, for: item)
   }
+
+  /// Keeps `size` in step with this view's size (keyed per call site)
+  func onSizeChange(_ size: Binding<CGSize>, fileID: String = #fileID, line: Int = #line) -> some View {
+    onSizeChange({ newSize in
+      size.wrappedValue = newSize
+    }, for: "\(fileID):\(line)")
+  }
 }
 
 private struct SizePreferenceKey<Item: Hashable>: PreferenceKey {
