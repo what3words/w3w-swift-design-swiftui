@@ -50,7 +50,8 @@ public struct W3WOverlayBottomSheet<Content: View>: View {
   private var background: some View {
     W3WColor.w3wSystemBackgroundElevatedPrimary.suColor
       .cornerRadius(data.cornerRadius, corners: [.topLeft, .topRight])
-      .edgesIgnoringSafeArea(.bottom)
+      // Under side insets too, to line up with the full-width keyboard
+      .ignoresSafeArea(edges: [.bottom, .horizontal])
   }
 }
 
