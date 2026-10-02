@@ -36,6 +36,7 @@ import SwiftUI
 public extension View {
   
   /// Tracks the full size of the current view and reports it when it changes.
+  @available(*, deprecated, message: "Use onSizeChange(_:) with a Binding, or onGeometryChange")
   func onSizeChange<Value: Hashable>(
     _ perform: @escaping (CGSize) -> Void,
     for item: Value
@@ -53,18 +54,14 @@ public extension View {
     }
   }
   
-  /// A convenience method that tracks only the height of the current view.
+  /// A convenience method that tracks only the height of the current view. `item` is no longer needed
   func onHeightChange<Value: Hashable>(_ height: Binding<CGFloat>, for item: Value) -> some View {
-    onSizeChange({ size in
-      height.wrappedValue = size.height
-    }, for: item)
+    onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height.wrappedValue = $0 }
   }
 
-  /// Keeps `size` in step with this view's size (keyed per call site)
-  func onSizeChange(_ size: Binding<CGSize>, fileID: String = #fileID, line: Int = #line) -> some View {
-    onSizeChange({ newSize in
-      size.wrappedValue = newSize
-    }, for: "\(fileID):\(line)")
+  /// Keeps `size` in step with this view's size
+  func onSizeChange(_ size: Binding<CGSize>) -> some View {
+    onGeometryChange(for: CGSize.self) { $0.size } action: { size.wrappedValue = $0 }
   }
 }
 
