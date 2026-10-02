@@ -11,18 +11,23 @@ import SwiftUI
 public struct W3WCloseToolbarItem: ToolbarContent {
   private let placement: ToolbarItemPlacement
   private let accessibilityLabel: String?
+  private let accessibilityIdentifier: String?
   private let action: () -> Void
 
+  /// `accessibilityIdentifier` overrides the shared one when a screen already has a UI-test tag.
   public init(placement: ToolbarItemPlacement = .topBarLeading,
               accessibilityLabel: String? = nil,
+              accessibilityIdentifier: String? = nil,
               action: @escaping () -> Void) {
     self.placement = placement
     self.accessibilityLabel = accessibilityLabel
+    self.accessibilityIdentifier = accessibilityIdentifier
     self.action = action
   }
 
   public var body: some ToolbarContent {
-    W3WNavigationToolbarItem(control: .close, placement: placement, accessibilityLabel: accessibilityLabel, action: action)
+    W3WNavigationToolbarItem(control: .close, placement: placement, accessibilityLabel: accessibilityLabel,
+                             accessibilityIdentifier: accessibilityIdentifier, action: action)
   }
 }
 
@@ -30,18 +35,23 @@ public struct W3WCloseToolbarItem: ToolbarContent {
 public struct W3WBackToolbarItem: ToolbarContent {
   private let placement: ToolbarItemPlacement
   private let accessibilityLabel: String?
+  private let accessibilityIdentifier: String?
   private let action: () -> Void
 
+  /// `accessibilityIdentifier` overrides the shared one when a screen already has a UI-test tag.
   public init(placement: ToolbarItemPlacement = .topBarLeading,
               accessibilityLabel: String? = nil,
+              accessibilityIdentifier: String? = nil,
               action: @escaping () -> Void) {
     self.placement = placement
     self.accessibilityLabel = accessibilityLabel
+    self.accessibilityIdentifier = accessibilityIdentifier
     self.action = action
   }
 
   public var body: some ToolbarContent {
-    W3WNavigationToolbarItem(control: .back, placement: placement, accessibilityLabel: accessibilityLabel, action: action)
+    W3WNavigationToolbarItem(control: .back, placement: placement, accessibilityLabel: accessibilityLabel,
+                             accessibilityIdentifier: accessibilityIdentifier, action: action)
   }
 }
 
@@ -49,37 +59,59 @@ struct W3WNavigationToolbarItem: ToolbarContent {
   let control: W3WNavigationControl
   let placement: ToolbarItemPlacement
   let accessibilityLabel: String?
+  let accessibilityIdentifier: String?
   let action: () -> Void
 
   var body: some ToolbarContent {
     if #available(iOS 26.0, *) {
       ToolbarItem(placement: placement) {
-        W3WNavigationControlButton(control: control, accessibilityLabel: accessibilityLabel, action: action)
+        W3WNavigationControlButton(control: control, accessibilityLabel: accessibilityLabel,
+                                   accessibilityIdentifier: accessibilityIdentifier, action: action)
       }
       .sharedBackgroundVisibility(.hidden)
     } else {
       ToolbarItem(placement: placement) {
-        W3WNavigationControlButton(control: control, accessibilityLabel: accessibilityLabel, action: action)
+        W3WNavigationControlButton(control: control, accessibilityLabel: accessibilityLabel,
+                                   accessibilityIdentifier: accessibilityIdentifier, action: action)
       }
     }
   }
 }
 
-/// The button inside the toolbar item; a View so it can read the theme and layout direction.
-struct W3WNavigationControlButton: View {
+/// The close / back glyph button on its own, for custom header bars that are not a toolbar.
+/// Reads the theme and layout direction from the environment; `tint` overrides the theme colour.
+public struct W3WNavigationControlButton: View {
   @Environment(\.theme) private var theme
   @Environment(\.layoutDirection) private var layoutDirection
-  let control: W3WNavigationControl
-  let accessibilityLabel: String?
-  let action: () -> Void
+  private let control: W3WNavigationControl
+  private let tint: Color?
+  private let iconSize: CGFloat
+  private let accessibilityLabel: String?
+  private let accessibilityIdentifier: String?
+  private let action: () -> Void
 
-  var body: some View {
+  public init(control: W3WNavigationControl,
+              tint: Color? = nil,
+              iconSize: CGFloat = 24,
+              accessibilityLabel: String? = nil,
+              accessibilityIdentifier: String? = nil,
+              action: @escaping () -> Void) {
+    self.control = control
+    self.tint = tint
+    self.iconSize = iconSize
+    self.accessibilityLabel = accessibilityLabel
+    self.accessibilityIdentifier = accessibilityIdentifier
+    self.action = action
+  }
+
+  public var body: some View {
     Button(action: action) {
       W3WIconImage(iconImage: control.image(for: layoutDirection),
-                   color: W3WNavigationControl.tint(from: theme))
+                   iconSize: iconSize,
+                   color: tint ?? W3WNavigationControl.tint(from: theme))
     }
     .accessibilityLabel(accessibilityLabel ?? control.defaultAccessibilityLabel)
-    .accessibilityIdentifier(control.accessibilityIdentifier)
+    .accessibilityIdentifier(accessibilityIdentifier ?? control.accessibilityIdentifier)
   }
 }
 
