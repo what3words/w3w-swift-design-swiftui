@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "w3w-swift-design-swiftui",
-    platforms: [.iOS("13.0")],
+    platforms: [.iOS("16.1")],
     products: [.library(name: "W3WSwiftDesignSwiftUI", targets: ["W3WSwiftDesignSwiftUI"])],
 
     dependencies: [
