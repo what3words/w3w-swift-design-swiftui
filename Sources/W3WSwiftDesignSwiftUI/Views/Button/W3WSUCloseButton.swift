@@ -10,7 +10,7 @@ import W3WSwiftThemes
 
 /// In-content circular close button (SwiftUI counterpart of W3WCloseButton).
 /// Colours come from the environment theme (`labelsPrimary` glyph on `fillsSenary`); pass `foreground` /
-/// `background` to override, e.g. for a camera feed.
+/// `background` to override, e.g. for a camera feed. One default size so every camera screen matches.
 public struct W3WSUCloseButton: View {
   @Environment(\.theme) private var theme
   private let foreground: Color?
@@ -21,9 +21,13 @@ public struct W3WSUCloseButton: View {
   private let accessibilityIdentifier: String?
   private let onTap: () -> Void
 
+  /// 40 pt platter with a 24 pt glyph, the size the OCR and QR scanner screens share.
+  public static let defaultSize: CGFloat = 40
+  static let iconRatio: CGFloat = 0.6
+
   public init(foreground: Color? = nil,
               background: Color? = nil,
-              size: CGFloat = 34,
+              size: CGFloat = W3WSUCloseButton.defaultSize,
               iconSize: CGFloat? = nil,
               accessibilityLabel: String? = nil,
               accessibilityIdentifier: String? = nil,
@@ -31,7 +35,7 @@ public struct W3WSUCloseButton: View {
     self.foreground = foreground
     self.background = background
     self.size = size
-    self.iconSize = iconSize ?? size * 0.5
+    self.iconSize = iconSize ?? size * W3WSUCloseButton.iconRatio
     self.accessibilityLabel = accessibilityLabel
     self.accessibilityIdentifier = accessibilityIdentifier
     self.onTap = onTap
