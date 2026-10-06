@@ -8,11 +8,13 @@
 import SwiftUI
 import W3WSwiftThemes
 
-/// In-content circular close button (SwiftUI counterpart of W3WCloseButton). Without colours it keeps the
-/// white-on-translucent look used over camera feeds; pass theme colours for a surface.
+/// In-content circular close button (SwiftUI counterpart of W3WCloseButton).
+/// Colours come from the environment theme (`labelsPrimary` glyph on `fillsSenary`); pass `foreground` /
+/// `background` to override, e.g. for a camera feed.
 public struct W3WSUCloseButton: View {
-  private let foreground: Color
-  private let background: Color
+  @Environment(\.theme) private var theme
+  private let foreground: Color?
+  private let background: Color?
   private let size: CGFloat
   private let iconSize: CGFloat
   private let accessibilityLabel: String?
@@ -26,8 +28,8 @@ public struct W3WSUCloseButton: View {
               accessibilityLabel: String? = nil,
               accessibilityIdentifier: String? = nil,
               onTap: @escaping () -> Void) {
-    self.foreground = foreground ?? W3WCoreColor.white.suColor
-    self.background = background ?? W3WCoreColor(hex: 0x7F7F7F).suColor.opacity(0.2)
+    self.foreground = foreground
+    self.background = background
     self.size = size
     self.iconSize = iconSize ?? size * 0.5
     self.accessibilityLabel = accessibilityLabel
@@ -37,9 +39,11 @@ public struct W3WSUCloseButton: View {
 
   public var body: some View {
     Button(action: onTap) {
-      W3WIconImage(iconImage: W3WNavigationControl.close.image(for: .leftToRight), iconSize: iconSize, color: foreground)
+      W3WIconImage(iconImage: W3WNavigationControl.close.image(for: .leftToRight),
+                   iconSize: iconSize,
+                   color: foreground ?? theme.labelsPrimary)
         .frame(width: size, height: size)
-        .background(background)
+        .background(background ?? theme.fillsSenary ?? W3WCoreColor(hex: 0x7F7F7F).suColor.opacity(0.2))
         .clipShape(Circle())
     }
     .accessibilityLabel(accessibilityLabel ?? W3WNavigationControl.close.defaultAccessibilityLabel)

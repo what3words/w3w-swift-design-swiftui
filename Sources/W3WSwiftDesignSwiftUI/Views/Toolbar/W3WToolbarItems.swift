@@ -10,23 +10,26 @@ import SwiftUI
 /// Close (X) toolbar item without the Liquid Glass tinted circle, tinted from the environment theme.
 public struct W3WCloseToolbarItem: ToolbarContent {
   private let placement: ToolbarItemPlacement
+  private let tint: Color?
   private let accessibilityLabel: String?
   private let accessibilityIdentifier: String?
   private let action: () -> Void
 
-  /// `accessibilityIdentifier` overrides the shared one when a screen already has a UI-test tag.
+  /// `tint` overrides the theme colour; `accessibilityIdentifier` overrides the shared one when a screen already has a UI-test tag.
   public init(placement: ToolbarItemPlacement = .topBarLeading,
+              tint: Color? = nil,
               accessibilityLabel: String? = nil,
               accessibilityIdentifier: String? = nil,
               action: @escaping () -> Void) {
     self.placement = placement
+    self.tint = tint
     self.accessibilityLabel = accessibilityLabel
     self.accessibilityIdentifier = accessibilityIdentifier
     self.action = action
   }
 
   public var body: some ToolbarContent {
-    W3WNavigationToolbarItem(control: .close, placement: placement, accessibilityLabel: accessibilityLabel,
+    W3WNavigationToolbarItem(control: .close, placement: placement, tint: tint, accessibilityLabel: accessibilityLabel,
                              accessibilityIdentifier: accessibilityIdentifier, action: action)
   }
 }
@@ -34,23 +37,26 @@ public struct W3WCloseToolbarItem: ToolbarContent {
 /// Back chevron toolbar item, mirrored for RTL, without the Liquid Glass background.
 public struct W3WBackToolbarItem: ToolbarContent {
   private let placement: ToolbarItemPlacement
+  private let tint: Color?
   private let accessibilityLabel: String?
   private let accessibilityIdentifier: String?
   private let action: () -> Void
 
-  /// `accessibilityIdentifier` overrides the shared one when a screen already has a UI-test tag.
+  /// `tint` overrides the theme colour; `accessibilityIdentifier` overrides the shared one when a screen already has a UI-test tag.
   public init(placement: ToolbarItemPlacement = .topBarLeading,
+              tint: Color? = nil,
               accessibilityLabel: String? = nil,
               accessibilityIdentifier: String? = nil,
               action: @escaping () -> Void) {
     self.placement = placement
+    self.tint = tint
     self.accessibilityLabel = accessibilityLabel
     self.accessibilityIdentifier = accessibilityIdentifier
     self.action = action
   }
 
   public var body: some ToolbarContent {
-    W3WNavigationToolbarItem(control: .back, placement: placement, accessibilityLabel: accessibilityLabel,
+    W3WNavigationToolbarItem(control: .back, placement: placement, tint: tint, accessibilityLabel: accessibilityLabel,
                              accessibilityIdentifier: accessibilityIdentifier, action: action)
   }
 }
@@ -58,6 +64,7 @@ public struct W3WBackToolbarItem: ToolbarContent {
 struct W3WNavigationToolbarItem: ToolbarContent {
   let control: W3WNavigationControl
   let placement: ToolbarItemPlacement
+  let tint: Color?
   let accessibilityLabel: String?
   let accessibilityIdentifier: String?
   let action: () -> Void
@@ -65,13 +72,13 @@ struct W3WNavigationToolbarItem: ToolbarContent {
   var body: some ToolbarContent {
     if #available(iOS 26.0, *) {
       ToolbarItem(placement: placement) {
-        W3WNavigationControlButton(control: control, accessibilityLabel: accessibilityLabel,
+        W3WNavigationControlButton(control: control, tint: tint, accessibilityLabel: accessibilityLabel,
                                    accessibilityIdentifier: accessibilityIdentifier, action: action)
       }
       .sharedBackgroundVisibility(.hidden)
     } else {
       ToolbarItem(placement: placement) {
-        W3WNavigationControlButton(control: control, accessibilityLabel: accessibilityLabel,
+        W3WNavigationControlButton(control: control, tint: tint, accessibilityLabel: accessibilityLabel,
                                    accessibilityIdentifier: accessibilityIdentifier, action: action)
       }
     }
