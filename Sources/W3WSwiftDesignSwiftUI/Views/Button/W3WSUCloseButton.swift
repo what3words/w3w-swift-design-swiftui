@@ -1,0 +1,63 @@
+//
+//  W3WSUCloseButton.swift
+//  w3w-swift-design-swiftui
+//
+//  Created by Au Nguyen on 02/10/2026.
+//
+
+import SwiftUI
+import W3WSwiftThemes
+
+/// In-content circular close button (SwiftUI counterpart of W3WCloseButton).
+/// Colours come from the environment theme (`labelsPrimary` glyph on `fillsSenary`); pass `foreground` /
+/// `background` to override, e.g. for a camera feed. One default size so every camera screen matches.
+public struct W3WSUCloseButton: View {
+  @Environment(\.theme) private var theme
+  private let foreground: Color?
+  private let background: Color?
+  private let size: CGFloat
+  private let iconSize: CGFloat
+  private let accessibilityLabel: String?
+  private let accessibilityIdentifier: String?
+  private let onTap: () -> Void
+
+  /// 40 pt platter with a 24 pt glyph, the size the OCR and QR scanner screens share.
+  public static let defaultSize: CGFloat = 40
+  static let iconRatio: CGFloat = 0.6
+
+  public init(foreground: Color? = nil,
+              background: Color? = nil,
+              size: CGFloat = W3WSUCloseButton.defaultSize,
+              iconSize: CGFloat? = nil,
+              accessibilityLabel: String? = nil,
+              accessibilityIdentifier: String? = nil,
+              onTap: @escaping () -> Void) {
+    self.foreground = foreground
+    self.background = background
+    self.size = size
+    self.iconSize = iconSize ?? size * W3WSUCloseButton.iconRatio
+    self.accessibilityLabel = accessibilityLabel
+    self.accessibilityIdentifier = accessibilityIdentifier
+    self.onTap = onTap
+  }
+
+  public var body: some View {
+    Button(action: onTap) {
+      W3WIconImage(iconImage: W3WNavigationControl.close.image(for: .leftToRight),
+                   iconSize: iconSize,
+                   color: foreground ?? theme.labelsPrimary)
+        .frame(width: size, height: size)
+        .background(background ?? theme.fillsSenary ?? W3WCoreColor(hex: 0x7F7F7F).suColor.opacity(0.2))
+        .clipShape(Circle())
+    }
+    .accessibilityLabel(accessibilityLabel ?? W3WNavigationControl.close.defaultAccessibilityLabel)
+    .accessibilityIdentifier(accessibilityIdentifier ?? W3WNavigationControl.close.accessibilityIdentifier)
+  }
+}
+
+#Preview {
+  ZStack {
+    Color.gray
+    W3WSUCloseButton { }
+  }
+}
