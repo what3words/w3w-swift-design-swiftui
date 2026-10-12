@@ -37,8 +37,13 @@ public enum W3WNavigationControl {
     }
   }
 
-  /// Tint for nav bar close/back buttons: the theme's dark-blue label colour (navy in light mode, near-white in dark).
+  /// Nav bar tint shared with titles: the theme's dark-blue label colour (navy in light mode, near-white in dark).
   public static func tint(from theme: W3WSwiftUITheme) -> Color? {
     theme.labelsTertiary
+  }
+
+  /// Glyph colour inside the glass circle, following the iOS component: black in light mode, white in dark.
+  public static func glyphTint(from theme: W3WSwiftUITheme) -> Color? {
+    theme.labelsPrimaryBlackInverse
   }
 }
