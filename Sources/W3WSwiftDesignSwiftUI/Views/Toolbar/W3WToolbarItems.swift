@@ -87,6 +87,7 @@ public struct W3WNavigationControlButton: View {
 
   @Environment(\.theme) private var theme
   @Environment(\.layoutDirection) private var layoutDirection
+  @Environment(\.colorScheme) private var colorScheme
   private let control: W3WNavigationControl
   private let tint: Color?
   private let glass: Bool
@@ -115,7 +116,7 @@ public struct W3WNavigationControlButton: View {
     Button(action: action) {
       W3WIconImage(iconImage: control.image(for: layoutDirection),
                    iconSize: iconSize,
-                   color: tint ?? W3WNavigationControl.glyphTint(from: theme))
+                   color: tint ?? W3WNavigationControl.glyphTint(for: colorScheme, theme: theme))
         .frame(width: glass ? Self.glassSize : nil, height: glass ? Self.glassSize : nil)
     }
     .modifier(GlassCircle(enabled: glass))

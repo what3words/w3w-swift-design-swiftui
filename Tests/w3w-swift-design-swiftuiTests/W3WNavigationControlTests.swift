@@ -26,6 +26,12 @@ struct W3WNavigationControlTests {
     #expect(W3WNavigationControl.tint(from: theme) == W3WTheme.what3words.labelsTertiary?.suColor)
   }
 
+  @Test func glyphTintFollowsTheColorScheme() {
+    let theme = W3WSwiftUITheme(theme: .what3words)
+    #expect(W3WNavigationControl.glyphTint(for: .light, theme: theme) == W3WCoreColor.black.suColor)
+    #expect(W3WNavigationControl.glyphTint(for: .dark, theme: theme) == W3WCoreColor.white.suColor)
+  }
+
   @Test func glyphTintIsTheBlackOrWhiteLabel() {
     let theme = W3WSwiftUITheme(theme: .what3words)
     #expect(W3WNavigationControl.glyphTint(from: theme) == W3WTheme.what3words.labelsPrimaryBlackInverse?.suColor)
