@@ -25,4 +25,11 @@ struct W3WNavigationControlTests {
     let theme = W3WSwiftUITheme(theme: .what3words)
     #expect(W3WNavigationControl.tint(from: theme) == W3WTheme.what3words.labelsTertiary?.suColor)
   }
+
+  @Test func glyphTintIsTheBlackOrWhiteLabel() {
+    let theme = W3WSwiftUITheme(theme: .what3words)
+    #expect(W3WNavigationControl.glyphTint(from: theme) == W3WTheme.what3words.labelsPrimaryBlackInverse?.suColor)
+    #expect(W3WTheme.what3words.labelsPrimaryBlackInverse?[.light] == .black)
+    #expect(W3WTheme.what3words.labelsPrimaryBlackInverse?[.dark] == .white)
+  }
 }
