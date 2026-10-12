@@ -9,8 +9,9 @@ import SwiftUI
 import W3WSwiftThemes
 
 /// In-content circular close button (SwiftUI counterpart of W3WCloseButton).
-/// Colours come from the environment theme (`labelsPrimary` glyph on `fillsSenary`); pass `foreground` /
-/// `background` to override, e.g. for a camera feed. One default size so every camera screen matches.
+/// On iOS 26+ it is the same system glass circle as the nav bar items (`W3WNavigationControlButton`, black/white
+/// glyph; `foreground` still overrides). Before that, colours come from the environment theme (`labelsPrimary` glyph
+/// on `fillsSenary`); pass `foreground` / `background` to override, e.g. for a camera feed.
 public struct W3WSUCloseButton: View {
   @Environment(\.theme) private var theme
   private let foreground: Color?
@@ -42,16 +43,25 @@ public struct W3WSUCloseButton: View {
   }
 
   public var body: some View {
-    Button(action: onTap) {
-      W3WIconImage(iconImage: W3WNavigationControl.close.image(for: .leftToRight),
-                   iconSize: iconSize,
-                   color: foreground ?? theme.labelsPrimary)
-        .frame(width: size, height: size)
-        .background(background ?? theme.fillsSenary ?? W3WCoreColor(hex: 0x7F7F7F).suColor.opacity(0.2))
-        .clipShape(Circle())
+    if #available(iOS 26.0, *) {
+      W3WNavigationControlButton(control: .close,
+                                 tint: foreground,
+                                 glass: true,
+                                 accessibilityLabel: accessibilityLabel,
+                                 accessibilityIdentifier: accessibilityIdentifier,
+                                 action: onTap)
+    } else {
+      Button(action: onTap) {
+        W3WIconImage(iconImage: W3WNavigationControl.close.image(for: .leftToRight),
+                     iconSize: iconSize,
+                     color: foreground ?? theme.labelsPrimary)
+          .frame(width: size, height: size)
+          .background(background ?? theme.fillsSenary ?? W3WCoreColor(hex: 0x7F7F7F).suColor.opacity(0.2))
+          .clipShape(Circle())
+      }
+      .accessibilityLabel(accessibilityLabel ?? W3WNavigationControl.close.defaultAccessibilityLabel)
+      .accessibilityIdentifier(accessibilityIdentifier ?? W3WNavigationControl.close.accessibilityIdentifier)
     }
-    .accessibilityLabel(accessibilityLabel ?? W3WNavigationControl.close.defaultAccessibilityLabel)
-    .accessibilityIdentifier(accessibilityIdentifier ?? W3WNavigationControl.close.accessibilityIdentifier)
   }
 }
 
