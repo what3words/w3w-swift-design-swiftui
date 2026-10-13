@@ -120,12 +120,12 @@ public extension W3WAlertView {
 
 private extension View {
   @ViewBuilder func accessibilityIdentifier(ifPresent identifier: String?) -> some View {
-    if let identifier { accessibilityIdentifier(identifier) } else { self }
+    if let identifier { accessibility(identifier: identifier) } else { self }
   }
 
   @ViewBuilder func accessibilityContainer(identifier: String?) -> some View {
     if let identifier {
-      accessibilityElement(children: .contain).accessibilityIdentifier(identifier)
+      accessibilityElement(children: .contain).accessibility(identifier: identifier)
     } else {
       self
     }
