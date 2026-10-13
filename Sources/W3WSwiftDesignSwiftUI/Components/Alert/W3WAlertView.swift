@@ -15,6 +15,7 @@ public struct W3WAlertView: View {
   private let message: String
   private let showsSpinner: Bool
   private let buttonTitle: String
+  private let accessibilityIdentifiers: AccessibilityIdentifiers
   private let onButtonTap: () -> Void
 
   /// - Parameters:
@@ -22,16 +23,19 @@ public struct W3WAlertView: View {
   ///   - message: supporting text under the title.
   ///   - showsSpinner: when true, a loading spinner appears under the message (e.g. "downloading…").
   ///   - buttonTitle: the single action button's title.
+  ///   - accessibilityIdentifiers: optional UI-test identifiers for the alert's parts.
   ///   - onButtonTap: called when the button is tapped (caller dismisses).
   public init(title: String,
               message: String,
               showsSpinner: Bool = false,
               buttonTitle: String,
+              accessibilityIdentifiers: AccessibilityIdentifiers = .init(),
               onButtonTap: @escaping () -> Void) {
     self.title = title
     self.message = message
     self.showsSpinner = showsSpinner
     self.buttonTitle = buttonTitle
+    self.accessibilityIdentifiers = accessibilityIdentifiers
     self.onButtonTap = onButtonTap
   }
 
@@ -59,12 +63,15 @@ public struct W3WAlertView: View {
         VStack(spacing: W3WPadding.medium.value) {
           Text(title)
             .w3w(font: .headline, weight: .bold)
+            .accessibilityIdentifier(ifPresent: accessibilityIdentifiers.title)
 
           Text(message)
             .w3w(font: .footnote)
+            .accessibilityIdentifier(ifPresent: accessibilityIdentifiers.message)
 
           if showsSpinner {
             W3WProgressView()
+              .accessibilityIdentifier(ifPresent: accessibilityIdentifiers.spinner)
           }
         }
         .w3w(foreground: \.labelsPrimaryBlackInverse)
@@ -81,11 +88,49 @@ public struct W3WAlertView: View {
             .frame(maxWidth: .infinity)
             .frame(height: buttonHeight)
         }
+        .accessibilityIdentifier(ifPresent: accessibilityIdentifiers.button)
       }
       .w3w(background: \.systemBackgroundElevatedPrimary)
       .clipShape(RoundedRectangle(cornerRadius: W3WCornerRadius.large.value))
+      .accessibilityContainer(identifier: accessibilityIdentifiers.card)
     }
   }
+
+public extension W3WAlertView {
+  struct AccessibilityIdentifiers {
+    public let card: String?
+    public let title: String?
+    public let message: String?
+    public let spinner: String?
+    public let button: String?
+
+    public init(card: String? = nil,
+                title: String? = nil,
+                message: String? = nil,
+                spinner: String? = nil,
+                button: String? = nil) {
+      self.card = card
+      self.title = title
+      self.message = message
+      self.spinner = spinner
+      self.button = button
+    }
+  }
+}
+
+private extension View {
+  @ViewBuilder func accessibilityIdentifier(ifPresent identifier: String?) -> some View {
+    if let identifier { accessibilityIdentifier(identifier) } else { self }
+  }
+
+  @ViewBuilder func accessibilityContainer(identifier: String?) -> some View {
+    if let identifier {
+      accessibilityElement(children: .contain).accessibilityIdentifier(identifier)
+    } else {
+      self
+    }
+  }
+}
 
 #Preview {
 
