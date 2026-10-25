@@ -48,6 +48,7 @@ public extension View {
 /// ButtonStyle that applies a themed background, padding, and shape based on the system size.
 private struct W3WButtonStyle: ButtonStyle {
   @Environment(\.theme) private var theme
+  @Environment(\.colorMode) private var colorMode
   let keyPath: KeyPath<W3WTheme, W3WColor?>
   let size: W3WSize
   
@@ -62,6 +63,7 @@ private struct W3WButtonStyle: ButtonStyle {
 /// ButtonStyle that applies a themed background and a custom shape.
 private struct W3WCustomShapeButtonStyle<S: Shape>: ButtonStyle {
   @Environment(\.theme) private var theme
+  @Environment(\.colorMode) private var colorMode
   let keyPath: KeyPath<W3WTheme, W3WColor?>
   let shape: S
   
@@ -78,6 +80,7 @@ private struct W3WCustomShapeButtonStyle<S: Shape>: ButtonStyle {
 /// The button label can be further modified (for padding, etc.) via the `modify` closure.
 private struct W3WCustomShapeAndSizeButtonStyle<S: Shape, Content: View>: ButtonStyle {
   @Environment(\.theme) private var theme
+  @Environment(\.colorMode) private var colorMode
   let keyPath: KeyPath<W3WTheme, W3WColor?>
   let shape: S
   let modify: (ButtonStyleConfiguration.Label) -> Content
