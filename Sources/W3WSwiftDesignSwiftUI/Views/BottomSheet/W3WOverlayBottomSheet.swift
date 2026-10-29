@@ -43,6 +43,8 @@ public struct W3WOverlayBottomSheet<Content: View>: View {
         content()
           .frame(maxWidth: .infinity)
       }
+      // content full width too, under the side safe areas like the background
+      .ignoresSafeArea(.container, edges: .horizontal)
       .background(background)
     }
   }

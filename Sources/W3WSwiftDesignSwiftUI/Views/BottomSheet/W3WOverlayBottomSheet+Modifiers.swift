@@ -135,42 +135,138 @@ public extension View {
 
 /// Internal ViewModifier that presents the Bottom Sheet based on `isPresented`.
 ///
-/// Inserts `W3WOverlayBottomSheet` into a ZStack when `isPresented == true`.
-/// Dismissing the sheet sets `isPresented = false`.
+/// From iOS 16.4 the sheet is presented over the whole screen (see `OverlayBottomSheetCover`), before that it's
+/// inserted into a ZStack. Dismissing the sheet sets `isPresented = false`.
 private struct OverlayBottomSheetIsPresentedModifier<Sheet: View>: ViewModifier {
   @Binding var isPresented: Bool
   let bottomSheet: () -> Sheet
   
   func body(content: Content) -> some View {
-    ZStack {
-      content
-      if isPresented {
+    if #available(iOS 16.4, *) {
+      content.modifier(OverlayBottomSheetCover(isShowing: isPresented) {
         W3WOverlayBottomSheet(content: bottomSheet) {
           isPresented = false
         }
+      })
+    } else {
+      ZStack {
+        content
+        if isPresented {
+          W3WOverlayBottomSheet(content: bottomSheet) {
+            isPresented = false
+          }
+        }
       }
+      .animation(.easeInOut, value: isPresented)
     }
-    .animation(.easeInOut, value: isPresented)
   }
 }
 
 /// Internal ViewModifier that presents the Bottom Sheet based on an optional `item`.
 ///
-/// Inserts `W3WOverlayBottomSheet` into a ZStack when `item != nil`.
-/// Dismissing the sheet sets `item = nil`.
+/// From iOS 16.4 the sheet is presented over the whole screen (see `OverlayBottomSheetCover`), before that it's
+/// inserted into a ZStack. Dismissing the sheet sets `item = nil`.
 private struct OverlayBottomSheetItemModifier<Item, Sheet: View>: ViewModifier {
   @Binding var item: Item?
   let bottomSheet: (Item) -> Sheet
   
+  /// the last item, so the sheet still has content while it animates out
+  @State private var shownItem: Item?
+  
   func body(content: Content) -> some View {
-    ZStack {
+    if #available(iOS 16.4, *) {
       content
-      if let item {
-        W3WOverlayBottomSheet(content: { bottomSheet(item) }) {
-          self.item = nil
+        .modifier(OverlayBottomSheetCover(isShowing: item != nil) {
+          if let sheetItem = item ?? shownItem {
+            W3WOverlayBottomSheet(content: { bottomSheet(sheetItem) }) {
+              self.item = nil
+            }
+          }
+        })
+        .onChange(of: item != nil) { _ in
+          if let item { shownItem = item }
+        }
+        .onAppear {
+          if let item { shownItem = item }
+        }
+    } else {
+      ZStack {
+        content
+        if let item {
+          W3WOverlayBottomSheet(content: { bottomSheet(item) }) {
+            self.item = nil
+          }
         }
       }
+      .animation(.easeInOut, value: item != nil)
     }
-    .animation(.easeInOut, value: item != nil)
+  }
+}
+
+/// Presents the bottom sheet in a clear full screen cover, so its dim covers the whole screen,
+/// navigation bars included, even when the view sits inside a UIKit navigation controller.
+///
+/// The cover itself appears and goes without animation, the sheet fades in and out inside it as before.
+@available(iOS 16.4, *)
+private struct OverlayBottomSheetCover<Sheet: View>: ViewModifier {
+  let isShowing: Bool
+  @ViewBuilder let sheet: () -> Sheet
+  
+  /// the cover is on screen
+  @State private var isCoverPresented = false
+  /// the sheet is showing inside the cover
+  @State private var isSheetVisible = false
+  /// live copy of `isShowing`, a delayed closure would only see the value it captured
+  @State private var wantsSheet = false
+  
+  /// how long the sheet takes to fade out before the cover goes
+  private let fadeDuration: TimeInterval = 0.35
+  
+  func body(content: Content) -> some View {
+    content
+      .fullScreenCover(isPresented: $isCoverPresented) {
+        ZStack {
+          if isSheetVisible {
+            sheet()
+          }
+        }
+        .animation(.easeInOut, value: isSheetVisible)
+        .presentationBackground(.clear)
+        .onAppear {
+          isSheetVisible = true
+        }
+      }
+      .onChange(of: isShowing) { showing in
+        wantsSheet = showing
+        showing ? show() : hide()
+      }
+      .onAppear {
+        wantsSheet = isShowing
+        if isShowing { show() }
+      }
+  }
+  
+  private func show() {
+    if isCoverPresented {
+      isSheetVisible = true
+    } else {
+      withoutAnimation { isCoverPresented = true }
+    }
+  }
+  
+  private func hide() {
+    isSheetVisible = false
+    DispatchQueue.main.asyncAfter(deadline: .now() + fadeDuration) {
+      // a new sheet may have come up while this one faded out
+      guard !wantsSheet else { return }
+      withoutAnimation { isCoverPresented = false }
+    }
+  }
+  
+  /// presents or dismisses the cover without its slide
+  private func withoutAnimation(_ change: () -> Void) {
+    var transaction = Transaction()
+    transaction.disablesAnimations = true
+    withTransaction(transaction, change)
   }
 }
