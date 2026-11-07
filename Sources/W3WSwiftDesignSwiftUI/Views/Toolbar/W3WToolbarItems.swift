@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// Close (X) toolbar item without the Liquid Glass tinted circle, tinted from the environment theme.
 public struct W3WCloseToolbarItem: ToolbarContent {
@@ -112,9 +115,23 @@ public struct W3WNavigationControlButton: View {
     self.action = action
   }
 
+  /// A bar item's environment stays LTR when the app forces RTL through `UIView.appearance()`
+  /// (in-app language), so a forced attribute wins over the environment.
+  private var effectiveLayoutDirection: LayoutDirection {
+    #if canImport(UIKit) && !os(watchOS)
+    switch UIView.appearance().semanticContentAttribute {
+    case .forceRightToLeft: return .rightToLeft
+    case .forceLeftToRight: return .leftToRight
+    default: return layoutDirection
+    }
+    #else
+    return layoutDirection
+    #endif
+  }
+
   public var body: some View {
     Button(action: action) {
-      W3WIconImage(iconImage: control.image(for: layoutDirection),
+      W3WIconImage(iconImage: control.image(for: effectiveLayoutDirection),
                    iconSize: iconSize,
                    color: tint ?? W3WNavigationControl.glyphTint(for: colorScheme, theme: theme))
         .frame(width: glass ? Self.glassSize : nil, height: glass ? Self.glassSize : nil)
